@@ -1,0 +1,4 @@
+<resources>
+    <!-- Base theme required by AndroidManifest — Compose handles theming at runtime -->
+    <style name="Theme.Aprovee" parent="android:Theme.Material.Light.NoTitleBar" />
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Aprovee</string>
+    <style name="Theme.Aprovee" parent="android:Theme.Material.Light.NoTitleBar"/>
+</resources>
