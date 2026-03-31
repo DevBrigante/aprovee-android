@@ -1,0 +1,18 @@
+# Build outputs
+build/
+app/build/
+
+# Gradle cache local
+.gradle/
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Local configuration (path do SDK — específico por máquina)
+local.properties
+
+# Sistema operacional
+.DS_Store
