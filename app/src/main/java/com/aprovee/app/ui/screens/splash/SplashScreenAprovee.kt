@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -25,8 +24,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.aprovee.app.R
 import com.aprovee.app.ui.components.AproveeIcon
 import com.aprovee.app.ui.theme.AproveeTheme
 import com.aprovee.app.ui.theme.BackgroundDark
@@ -38,16 +39,13 @@ import kotlinx.coroutines.delay
 fun SplashScreen(
     onNavigateToLogin: () -> Unit
 ) {
-    // 1. Controla se o conteudo é visivel (inicia false para animar)
     var isVisible by remember { mutableStateOf(false) }
 
-    // 2. LaunchedEffect(Unit) roda UMA vez quando o Composable entra na tela
     LaunchedEffect(Unit) {
-        isVisible = true // dispara a animação fade-in
-        delay(2500L) // espera 2.5s
-        onNavigateToLogin() // navega para login
+        isVisible = true
+        delay(2500L)
+        onNavigateToLogin()
     }
-
     SplashContent(isVisible = isVisible, isDark = isSystemInDarkTheme())
 }
 
@@ -69,7 +67,6 @@ fun SplashContent(
         AnimatedVisibility(
             visible = isVisible,
             enter = fadeIn(
-                // duração da animação
                 animationSpec = tween(
                     durationMillis = 800
                 )
@@ -77,9 +74,9 @@ fun SplashContent(
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                modifier = Modifier.fillMaxSize()
             ) {
-                // Icone
+                Spacer(modifier = Modifier.weight(0.35f))
                 AproveeIcon(
                     size = 80.dp,
                     tint = iconTint
@@ -89,7 +86,7 @@ fun SplashContent(
                         .height(16.dp)
                 )
                 Text(
-                    text = "Aprovee",
+                    text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.displayLarge,
                     color = Color.White
                 )
@@ -98,13 +95,13 @@ fun SplashContent(
                         .height(8.dp)
                 )
                 Text(
-                    text = "Suas vendas, sempre sob controle",
+                    text = stringResource(R.string.splash_subtitle),
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.White.copy(alpha = 0.7f)
                 )
                 Spacer(
                     modifier = Modifier
-                        .height(24.dp)
+                        .height(40.dp)
                 )
                 Box(
                     modifier = Modifier
@@ -113,6 +110,7 @@ fun SplashContent(
                         .clip(RoundedCornerShape(2.dp))
                         .background(Color.White.copy(alpha = 0.4f))
                 )
+                Spacer(modifier = Modifier.weight(0.65f))
             }
         }
     }
@@ -122,7 +120,7 @@ fun SplashContent(
 @Composable
 private fun SplashScreenLightPreview() {
     AproveeTheme(darkTheme = false) {
-        SplashContent(isVisible = true, isDark = false) // força visivel no preview
+        SplashContent(isVisible = true, isDark = false)
     }
 }
 

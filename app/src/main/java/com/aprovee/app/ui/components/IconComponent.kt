@@ -58,6 +58,6 @@ fun AproveeIcon(
 
 @Preview
 @Composable
-fun AproveeIconPreview() {
+private fun AproveeIconPreview() {
     AproveeIcon(40.dp, modifier = Modifier)
 }

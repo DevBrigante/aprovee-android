@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Aprovee</string>
+    <string name="splash_subtitle">Suas vendas, sempre sob controle</string>
+    <string name="toggle_password_visibility">Alternar visibilidade da senha</string>
 </resources>
