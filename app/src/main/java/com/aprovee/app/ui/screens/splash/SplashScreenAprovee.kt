@@ -32,6 +32,8 @@ import com.aprovee.app.ui.components.AproveeIcon
 import com.aprovee.app.ui.theme.AproveeTheme
 import com.aprovee.app.ui.theme.BackgroundDark
 import com.aprovee.app.ui.theme.Brand
+import com.aprovee.app.ui.theme.BrandDark
+import com.aprovee.app.ui.theme.BrandLight
 import kotlinx.coroutines.delay
 
 
@@ -56,7 +58,7 @@ fun SplashContent(
     isDark: Boolean = false
 ) {
     val backgroundColor = if(isDark) BackgroundDark else Brand
-    val iconTint = if(isDark) Brand else Color.White
+    val backgroundTint = if(isDark) BrandDark else BrandLight
 
     Box(
         modifier = Modifier
@@ -79,7 +81,7 @@ fun SplashContent(
                 Spacer(modifier = Modifier.weight(0.35f))
                 AproveeIcon(
                     size = 80.dp,
-                    tint = iconTint
+                    backgroundTint = backgroundTint
                 )
                 Spacer(
                     modifier = Modifier

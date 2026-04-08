@@ -36,7 +36,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.res.stringResource
 import com.aprovee.app.R
-
+import com.aprovee.app.ui.theme.Label
 @Composable
 fun AproveeTextField(
     value: String,
@@ -73,9 +73,10 @@ fun AproveeTextField(
                 Text(
                     text = placeholder,
                     style = MaterialTheme.typography.bodyMedium,
+                    color = Label
                 )
             },
-            isError = isError,
+        isError = isError,
             visualTransformation = if(isPassword && !passwordVisible) {
                 PasswordVisualTransformation()
             } else {
@@ -104,8 +105,9 @@ fun AproveeTextField(
                 focusedBorderColor = MaterialTheme.colorScheme.primary,
                 unfocusedBorderColor = MaterialTheme.colorScheme.outline,
                 errorBorderColor = MaterialTheme.colorScheme.error,
-                focusedContainerColor = MaterialTheme.colorScheme.surface,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                errorContainerColor = MaterialTheme.colorScheme.errorContainer,
             ),
             textStyle = MaterialTheme.typography.bodyMedium.copy(
                 color = MaterialTheme.colorScheme.onSurface
@@ -165,11 +167,13 @@ private fun AproveeTextFieldPreview() {
                     .height(16.dp)
             )
             AproveeTextField(
-                value = "",
+                value = "123",
                 onValueChange = {},
                 label = "Senha",
                 placeholder = "min. 8 caracteres",
-                isPassword = true
+                isPassword = true,
+                isError = true,
+                errorMessage = "Senha incorreta"
             )
         }
     }
@@ -205,11 +209,13 @@ private fun AproveeTextFieldDarkPreview() {
                     .height(16.dp)
             )
             AproveeTextField(
-                value = "225617",
+                value = "123",
                 onValueChange = {},
                 label = "Senha",
                 placeholder = "min. 8 caracteres",
-                isPassword = true
+                isPassword = true,
+                isError = true,
+                errorMessage = "Senha incorreta"
             )
         }
     }
