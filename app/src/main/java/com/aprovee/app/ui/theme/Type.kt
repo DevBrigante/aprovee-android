@@ -20,7 +20,7 @@ val AppTypography = Typography(
     displayLarge = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 32.sp,
+        fontSize = 26.sp,
         lineHeight = 40.sp
     ),
     headlineLarge = TextStyle(

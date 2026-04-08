@@ -16,26 +16,31 @@ private val LightColorScheme = lightColorScheme(
     background       = BackgroundLight,
     onBackground     = TextPrimary,
     surface          = SurfaceLight,
+    surfaceVariant = FieldBackground,
     onSurface        = TextPrimary,
     onSurfaceVariant = TextSecondary,
     outline          = Border,
     error            = Error,
+    errorContainer = FieldBackgroundError
 )
 
 private val DarkColorScheme = darkColorScheme(
     primary          = Brand,
-    onPrimary        = Navy,
+    onPrimary        = TextPrimaryDark,
     primaryContainer = BrandDark,
     onPrimaryContainer = BrandLight,
     secondary        = AccentGold,
-    onSecondary      = Navy,
+    onSecondary      = TextPrimaryDark,
     background       = BackgroundDark,
     onBackground     = TextPrimaryDark,
     surface          = SurfaceDark,
-    onSurface        = SurfaceLight,
-    onSurfaceVariant = TextSecondaryDark,
+    surfaceVariant = FieldBackgroundDark,
+    onSurface        = TextPrimaryDark,
+    onSurfaceVariant = TextSecondary,
     outline          = BorderDark,
-    error            = Error,
+    error            = ErrorDark,
+    errorContainer = ErrorContainerDark,
+    onErrorContainer = OnErrorContainerDark
 )
 
 @Composable

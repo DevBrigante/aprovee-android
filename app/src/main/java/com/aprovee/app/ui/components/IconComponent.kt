@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +23,8 @@ import androidx.compose.ui.unit.dp
 fun AproveeIcon(
     size: Dp,
     modifier: Modifier = Modifier,
-    tint: Color = Color.White
+    tint: Color = Color.White,
+    backgroundTint: Color = MaterialTheme.colorScheme.primary
 ) {
     val cornerRadius = size * 0.25f
     val circleSize = size * 0.55f
@@ -33,7 +35,7 @@ fun AproveeIcon(
         modifier = modifier
             .size(size)
             .clip(RoundedCornerShape(cornerRadius))
-            .background(tint.copy(alpha = 0.25f)),
+            .background(color = backgroundTint),
         contentAlignment = Alignment.Center
     ) {
         Box(
@@ -59,5 +61,5 @@ fun AproveeIcon(
 @Preview
 @Composable
 private fun AproveeIconPreview() {
-    AproveeIcon(40.dp, modifier = Modifier)
+    AproveeIcon(40.dp, modifier = Modifier, backgroundTint = MaterialTheme.colorScheme.onPrimaryContainer)
 }

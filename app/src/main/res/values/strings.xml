@@ -2,4 +2,10 @@
     <string name="app_name">Aprovee</string>
     <string name="splash_subtitle">Suas vendas, sempre sob controle</string>
     <string name="toggle_password_visibility">Alternar visibilidade da senha</string>
+    <string name="login_subtitle">Bem-vindo! Controle seus clientes e \nas suas vendas.</string>
+    <string name="login_email_label">E-mail</string>
+    <string name="login_email_placeholder">seu@email.com</string>
+    <string name="login_password_label">Senha</string>
+    <string name="login_password_placeholder">sua senha</string>
+    <string name="login_sign_in_button">Entrar</string>
 </resources>
