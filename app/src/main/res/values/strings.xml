@@ -8,4 +8,6 @@
     <string name="login_password_label">Senha</string>
     <string name="login_password_placeholder">sua senha</string>
     <string name="login_sign_in_button">Entrar</string>
+    <string name="login_remember_me">Lembrar-me</string>
+    <string name="login_forgot_password">Esqueci minha senha</string>
 </resources>
