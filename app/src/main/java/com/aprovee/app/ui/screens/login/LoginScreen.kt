@@ -1,24 +1,38 @@
 package com.aprovee.app.ui.screens.login
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -39,9 +53,12 @@ fun LoginScreen(
         password = uiState.password,
         emailError = uiState.emailError,
         passwordError = uiState.passwordError,
+        isRememberMeChecked = uiState.isRememberMeChecked,
+        onRememberMeChange = viewModel::onRememberMeChange,
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
-        onSignInClick = viewModel::onSignClick
+        onSignInClick = viewModel::onSignClick,
+        onForgotPasswordClick = viewModel::onForgetPasswordClick
     )
 }
 
@@ -51,8 +68,11 @@ private fun LoginContent(
     password: String,
     emailError: String?,
     passwordError: String?,
+    isRememberMeChecked: Boolean,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onRememberMeChange: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
     onSignInClick: () -> Unit,
 ) {
     Surface(
@@ -106,7 +126,54 @@ private fun LoginContent(
                 isError = passwordError != null,
                 errorMessage = passwordError
             )
-            Spacer(Modifier.height(42.dp))
+            Spacer(Modifier.height(15.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .offset(x = (6).dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            role = Role.Button
+                        ) { onRememberMeChange() }
+                ) {
+                    CompositionLocalProvider(
+                        LocalMinimumInteractiveComponentSize provides Dp.Unspecified
+                    ) {
+                        Checkbox(
+                            checked = isRememberMeChecked,
+                            onCheckedChange = null,
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        text = stringResource(R.string.login_remember_me),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+                Text(
+                    modifier = Modifier
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) { onForgotPasswordClick() },
+                    text = stringResource(R.string.login_forgot_password),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
             AproveePrimaryButton(
                 text = stringResource(R.string.login_sign_in_button),
                 onClick = onSignInClick
@@ -115,7 +182,7 @@ private fun LoginContent(
     }
 }
 
-@Preview(name = "Login - Light", showBackground = true)
+@Preview(name = "Login - Light", showBackground = true, showSystemUi = true)
 @Composable
 private fun LoginContentLightPreview() {
     AproveeTheme(darkTheme = false) {
@@ -126,12 +193,15 @@ private fun LoginContentLightPreview() {
             onPasswordChange = {},
             onSignInClick = {},
             emailError = null,
-            passwordError = null
+            passwordError = null,
+            isRememberMeChecked = false,
+            onRememberMeChange = {},
+            onForgotPasswordClick = {}
         )
     }
 }
 
-@Preview(name = "Login - Dark", showBackground = true)
+@Preview(name = "Login - Dark", showBackground = true, showSystemUi = true)
 @Composable
 private fun LoginContentDarkPreview() {
     AproveeTheme(darkTheme = true) {
@@ -142,7 +212,10 @@ private fun LoginContentDarkPreview() {
             onPasswordChange = {},
             onSignInClick = {},
             emailError = null,
-            passwordError = null
+            passwordError = null,
+            isRememberMeChecked = false,
+            onRememberMeChange = {},
+            onForgotPasswordClick = {}
         )
     }
 }
@@ -158,7 +231,10 @@ private fun LoginContentErrorPreview() {
             passwordError = "A senha deve ter no mínimo 8 caracteres",
             onEmailChange = {},
             onPasswordChange = {},
-            onSignInClick = {}
+            onSignInClick = {},
+            isRememberMeChecked = false,
+            onRememberMeChange = {},
+            onForgotPasswordClick = {}
         )
     }
 }
@@ -174,7 +250,10 @@ private fun LoginContentErrorDarkPreview() {
             passwordError = "A senha deve ter no mínimo 8 caracteres",
             onEmailChange = {},
             onPasswordChange = {},
-            onSignInClick = {}
+            onSignInClick = {},
+            isRememberMeChecked = false,
+            onRememberMeChange = {},
+            onForgotPasswordClick = {}
         )
     }
 }
