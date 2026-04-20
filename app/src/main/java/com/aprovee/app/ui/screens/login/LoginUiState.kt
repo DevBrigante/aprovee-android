@@ -8,5 +8,6 @@ data class LoginUiState(
     val isRememberMeChecked: Boolean = false,
     val isLoading: Boolean = false,
     val showForgotPasswordSheet: Boolean = false,
-    val navigateToHome: Boolean = false
+    val navigateToHome: Boolean = false,
+    val navigateToCreateAccount: Boolean = false
 )

@@ -26,6 +26,14 @@ class LoginViewModel: ViewModel() {
         _uiState.update { it.copy(showForgotPasswordSheet = true) }
     }
 
+    fun onCreateAccountClick() {
+        _uiState.update { it.copy(navigateToCreateAccount = true) }
+    }
+
+    fun onNavigateToCreateAccountConsumed() {
+        _uiState.update { it.copy(navigateToCreateAccount = false) }
+    }
+
     fun onDismissForgotPasswordSheet() {
         _uiState.update { it.copy(showForgotPasswordSheet = false) }
     }

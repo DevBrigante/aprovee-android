@@ -1,5 +1,6 @@
 package com.aprovee.app.ui.screens.login
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -16,9 +17,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +33,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
@@ -58,7 +66,8 @@ fun LoginScreen(
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
         onSignInClick = viewModel::onSignClick,
-        onForgotPasswordClick = viewModel::onForgetPasswordClick
+        onForgotPasswordClick = viewModel::onForgetPasswordClick,
+        onCreateAccountClick = viewModel::onCreateAccountClick
     )
 }
 
@@ -74,6 +83,7 @@ private fun LoginContent(
     onRememberMeChange: () -> Unit,
     onForgotPasswordClick: () -> Unit,
     onSignInClick: () -> Unit,
+    onCreateAccountClick: () -> Unit
 ) {
     Surface(
         modifier = Modifier
@@ -178,6 +188,79 @@ private fun LoginContent(
                 text = stringResource(R.string.login_sign_in_button),
                 onClick = onSignInClick
             )
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HorizontalDivider(
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
+                Text(
+                    modifier = Modifier.padding(horizontal = 12.dp),
+                    text = stringResource(R.string.login_or_divider),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                HorizontalDivider(
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colorScheme.outlineVariant
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedButton(
+                onClick = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outline
+                ),
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onBackground
+                )
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_google),
+                    contentDescription = stringResource(R.string.login_google_icon_description),
+                    modifier = Modifier.size(20.dp),
+                    tint = Color.Unspecified
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+
+                Text(
+                    text = stringResource(R.string.login_google_sign_in),
+                    style = MaterialTheme.typography.titleMedium
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.login_no_account),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                Text(
+                    modifier = Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) { onCreateAccountClick() },
+                    text = stringResource(R.string.login_create_account),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }
@@ -196,7 +279,8 @@ private fun LoginContentLightPreview() {
             passwordError = null,
             isRememberMeChecked = false,
             onRememberMeChange = {},
-            onForgotPasswordClick = {}
+            onForgotPasswordClick = {},
+            onCreateAccountClick = {}
         )
     }
 }
@@ -215,7 +299,8 @@ private fun LoginContentDarkPreview() {
             passwordError = null,
             isRememberMeChecked = false,
             onRememberMeChange = {},
-            onForgotPasswordClick = {}
+            onForgotPasswordClick = {},
+            onCreateAccountClick = {}
         )
     }
 }
@@ -234,7 +319,8 @@ private fun LoginContentErrorPreview() {
             onSignInClick = {},
             isRememberMeChecked = false,
             onRememberMeChange = {},
-            onForgotPasswordClick = {}
+            onForgotPasswordClick = {},
+            onCreateAccountClick = {}
         )
     }
 }
@@ -253,7 +339,8 @@ private fun LoginContentErrorDarkPreview() {
             onSignInClick = {},
             isRememberMeChecked = false,
             onRememberMeChange = {},
-            onForgotPasswordClick = {}
+            onForgotPasswordClick = {},
+            onCreateAccountClick = {}
         )
     }
 }

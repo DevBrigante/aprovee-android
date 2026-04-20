@@ -2,7 +2,7 @@
     <string name="app_name">Aprovee</string>
     <string name="splash_subtitle">Suas vendas, sempre sob controle</string>
     <string name="toggle_password_visibility">Alternar visibilidade da senha</string>
-    <string name="login_subtitle">Bem-vindo! Controle seus clientes e \nas suas vendas.</string>
+    <string name="login_subtitle">Bem-vindo! Organize seus clientes e \nas suas vendas.</string>
     <string name="login_email_label">E-mail</string>
     <string name="login_email_placeholder">seu@email.com</string>
     <string name="login_password_label">Senha</string>
@@ -10,4 +10,9 @@
     <string name="login_sign_in_button">Entrar</string>
     <string name="login_remember_me">Lembrar-me</string>
     <string name="login_forgot_password">Esqueci minha senha</string>
+    <string name="login_or_divider">ou</string>
+    <string name="login_google_sign_in">Entrar com Google</string>
+    <string name="login_google_icon_description">Ícone do Google</string>
+    <string name="login_no_account">Não tem uma conta?</string>
+    <string name="login_create_account">Criar uma nova conta</string>
 </resources>
