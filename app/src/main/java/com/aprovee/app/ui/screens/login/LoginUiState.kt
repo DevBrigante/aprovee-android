@@ -9,5 +9,8 @@ data class LoginUiState(
     val isLoading: Boolean = false,
     val showForgotPasswordSheet: Boolean = false,
     val navigateToHome: Boolean = false,
-    val navigateToCreateAccount: Boolean = false
+    val navigateToCreateAccount: Boolean = false,
+    val forgotPasswordEmail: String = "",
+    val forgotPasswordEmailError: String? = null,
+    val forgotPasswordState: ForgotPasswordState = ForgotPasswordState.Input
 )
