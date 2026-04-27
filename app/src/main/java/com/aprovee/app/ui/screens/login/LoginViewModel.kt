@@ -1,12 +1,18 @@
 package com.aprovee.app.ui.screens.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.aprovee.app.data.repository.FakeAuthRepository
+import com.aprovee.app.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(
+    private val authRepository: AuthRepository = FakeAuthRepository()
+): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
@@ -26,16 +32,57 @@ class LoginViewModel: ViewModel() {
         _uiState.update { it.copy(showForgotPasswordSheet = true) }
     }
 
+    fun onForgetPasswordEmailChange(value: String) {
+        _uiState.update { it.copy(forgotPasswordEmail = value, forgotPasswordEmailError = null) }
+    }
+
+    fun onForgotPasswordSendClick() {
+        val email = _uiState.value.forgotPasswordEmail
+        val emailError = when {
+            email.isBlank() -> "Informe seu e-mail"
+            !email.contains("@") || !email.contains(".") -> "E-mail inválido"
+            else -> null
+        }
+        if(emailError != null) {
+            _uiState.update { it.copy(forgotPasswordEmailError = emailError) }
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(forgotPasswordState = ForgotPasswordState.Loading) }
+
+            authRepository.sendPasswordReset(email)
+                .onSuccess {
+                    _uiState.update { it.copy(forgotPasswordState = ForgotPasswordState.Sent(email)) }
+                }
+                .onFailure {
+                    _uiState.update {
+                        it.copy(
+                            forgotPasswordState = ForgotPasswordState.Input,
+                            forgotPasswordEmailError = "Não foi possível enviar. Tente novamente"
+                        )
+                    }
+                }
+        }
+    }
+
+    fun onDismissForgotPasswordSheet() {
+        _uiState.update {
+            it.copy(
+                showForgotPasswordSheet = false,
+                forgotPasswordEmail = "",
+                forgotPasswordEmailError = null,
+                forgotPasswordState = ForgotPasswordState.Input
+            )
+        }
+    }
+
     fun onCreateAccountClick() {
         _uiState.update { it.copy(navigateToCreateAccount = true) }
     }
 
     fun onNavigateToCreateAccountConsumed() {
         _uiState.update { it.copy(navigateToCreateAccount = false) }
-    }
-
-    fun onDismissForgotPasswordSheet() {
-        _uiState.update { it.copy(showForgotPasswordSheet = false) }
     }
 
     fun onNavigateToHomeConsumed() {
