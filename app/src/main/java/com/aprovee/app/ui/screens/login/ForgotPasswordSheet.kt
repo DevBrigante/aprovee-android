@@ -137,7 +137,7 @@ fun ForgotPasswordSheetContent(
                                 append(stringResource(R.string.forgot_password_body_sent))
                             }
                             withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.primary)) {
-                                append(state.email)
+                                append(" ",state.email)
                             }
                         },
                         style = MaterialTheme.typography.bodyMedium,

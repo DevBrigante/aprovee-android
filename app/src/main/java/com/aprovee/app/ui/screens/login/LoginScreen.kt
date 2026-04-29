@@ -20,13 +20,16 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -50,11 +53,13 @@ import com.aprovee.app.ui.components.AproveePrimaryButton
 import com.aprovee.app.ui.components.AproveeTextField
 import com.aprovee.app.ui.theme.AproveeTheme
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
 
     LoginContent(
         email = uiState.email,
@@ -69,6 +74,22 @@ fun LoginScreen(
         onForgotPasswordClick = viewModel::onForgetPasswordClick,
         onCreateAccountClick = viewModel::onCreateAccountClick
     )
+
+    if(uiState.showForgotPasswordSheet) {
+        ModalBottomSheet(
+            onDismissRequest = viewModel::onDismissForgotPasswordSheet,
+            sheetState = sheetState,
+        ) {
+            ForgotPasswordSheetContent(
+                state = uiState.forgotPasswordState,
+                email = uiState.forgotPasswordEmail,
+                emailError = uiState.forgotPasswordEmailError,
+                onEmailChange = viewModel::onForgetPasswordEmailChange,
+                onSendClick = viewModel::onForgotPasswordSendClick,
+                onCloseClick = viewModel::onDismissForgotPasswordSheet
+            )
+        }
+    }
 }
 
 @Composable

@@ -17,7 +17,7 @@
     <string name="login_create_account">Criar uma nova conta</string>
     <string name="forgot_password_overline">RECUPERAÇÃO DE SENHA</string>
     <string name="forgot_password_title_input">Esqueci minha senha</string>
-    <string name="forgot_password_subtitle_input">Informe seu e-mail e enviaremos instruções para redefinir sua senha.</string>
+    <string name="forgot_password_subtitle_input">Informe seu e-mail e enviaremos instruções para redefinir a sua senha.</string>
     <string name="forgot_password_email_label">E-mail</string>
     <string name="forgot_password_email_placeholder">seu@email.com</string>
     <string name="forgot_password_send_button">Enviar</string>
