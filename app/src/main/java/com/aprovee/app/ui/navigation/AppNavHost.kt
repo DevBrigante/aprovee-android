@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.aprovee.app.ui.screens.login.LoginScreen
 
 @Composable
 fun AppNavHost() {
@@ -23,10 +24,7 @@ fun AppNavHost() {
         startDestination = LoginRoute
     ) {
         composable<LoginRoute> {
-            PlaceholderScreen(
-                title = "Login",
-                onNavigate = { navController.navigate(HomeRoute) }
-            )
+            LoginScreen()
         }
 
         composable<HomeRoute> {
