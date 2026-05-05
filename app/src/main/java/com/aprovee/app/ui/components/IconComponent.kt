@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 fun AproveeIcon(
     size: Dp,
     modifier: Modifier = Modifier,
+    contentDescription: String? = null,
     tint: Color = Color.White,
     backgroundTint: Color = MaterialTheme.colorScheme.primary
 ) {
@@ -51,7 +52,7 @@ fun AproveeIcon(
         ) {
             Icon(
                 imageVector = Icons.Rounded.Check,
-                contentDescription = "Aprovee icon",
+                contentDescription = contentDescription,
                 modifier = Modifier.size(checkSize),
                 tint = tint
             )

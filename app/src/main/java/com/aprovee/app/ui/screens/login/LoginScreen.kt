@@ -11,13 +11,18 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,10 +41,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -106,6 +114,7 @@ private fun LoginContent(
     onSignInClick: () -> Unit,
     onCreateAccountClick: () -> Unit
 ) {
+    val passwordFocusRequester = remember { FocusRequester() }
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -114,6 +123,8 @@ private fun LoginContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .imePadding()
+                .verticalScroll(rememberScrollState())
                 .windowInsetsPadding(WindowInsets.statusBars)
                 .padding(horizontal = 28.dp, vertical = 32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -137,6 +148,8 @@ private fun LoginContent(
             Spacer(modifier = Modifier.height(32.dp))
 
             AproveeTextField(
+                imeAction = ImeAction.Next,
+                keyboardActions = KeyboardActions(onNext = { passwordFocusRequester.requestFocus() }),
                 value = email,
                 onValueChange = onEmailChange,
                 label = stringResource(R.string.login_email_label),
@@ -148,6 +161,9 @@ private fun LoginContent(
             Spacer(Modifier.height(14.dp))
 
             AproveeTextField(
+                modifier = Modifier.focusRequester(passwordFocusRequester),
+                imeAction = ImeAction.Done,
+                keyboardActions = KeyboardActions(onDone = { onSignInClick() }),
                 value = password,
                 onValueChange = onPasswordChange,
                 label = stringResource(R.string.login_password_label),
@@ -169,10 +185,11 @@ private fun LoginContent(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
+                        .heightIn(min = 48.dp)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
-                            role = Role.Button
+                            role = Role.Checkbox
                         ) { onRememberMeChange() }
                 ) {
                     CompositionLocalProvider(
@@ -195,8 +212,10 @@ private fun LoginContent(
                     modifier = Modifier
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) { onForgotPasswordClick() },
+                            indication = null,
+                            role = Role.Button
+                        ) { onForgotPasswordClick() }
+                        .padding(vertical = 14.dp),
                     text = stringResource(R.string.login_forgot_password),
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary
