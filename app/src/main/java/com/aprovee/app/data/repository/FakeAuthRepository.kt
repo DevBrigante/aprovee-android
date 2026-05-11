@@ -8,4 +8,13 @@ class FakeAuthRepository: AuthRepository {
         delay(1500)
         return Result.success(Unit)
     }
+
+    override suspend fun createAccount(
+        name: String,
+        email: String,
+        password: String
+    ): Result<Unit> {
+        delay(1500)
+        return Result.success(Unit)
+    }
 }
