@@ -29,7 +29,7 @@
     <string name="create_account_title">Criar uma conta</string>
     <string name="create_account_subtitle">Preencha os dados para começar a usar o app</string>
     <string name="create_account_name_label">Nome completo</string>
-    <string name="create_account_name_placeholder">Brenno Brigante</string>
+    <string name="create_account_name_placeholder">Jane Done</string>
     <string name="create_account_email_label">E-mail</string>
     <string name="create_account_email_placeholder">seu@email.com</string>
     <string name="create_account_password_label">Senha</string>
