@@ -31,6 +31,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -52,9 +54,19 @@ import com.aprovee.app.ui.theme.AproveeTheme
 
 @Composable
 fun CreateAccountScreen(
+    onNavigateToHome: () -> Unit,
+    onNavigateBack: () -> Unit,
     viewModel: CreateAccountViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(uiState.navigateToHome) {
+        if(uiState.navigateToHome) {
+            onNavigateToHome()
+            viewModel.onNavigateToHomeConsumed()
+        }
+    }
+
     CreateAccountContent(
         name = uiState.name,
         email = uiState.email,
@@ -70,7 +82,8 @@ fun CreateAccountScreen(
         onPasswordChange = viewModel::onPasswordChange,
         onConfirmPasswordChange = viewModel::onConfirmPasswordChange,
         onCreateAccountClick = viewModel::onCreateAccountClick,
-        onBackClick = {},
+        onBackClick = onNavigateBack,
+        onConfirmPasswordFocusLost = viewModel::onConfirmPasswordFocusLost
     )
 
 }
@@ -91,7 +104,8 @@ private fun CreateAccountContent(
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
     onCreateAccountClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onConfirmPasswordFocusLost: () -> Unit
 ) {
     val emailFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
@@ -184,7 +198,11 @@ private fun CreateAccountContent(
                 Spacer(modifier = Modifier.height(14.dp))
 
                 AproveeTextField(
-                    modifier = Modifier.focusRequester(passwordFocusRequester),
+                    modifier = Modifier
+                        .focusRequester(passwordFocusRequester)
+                        .onFocusChanged { focusState ->
+                            if(!focusState.isFocused) onConfirmPasswordFocusLost()
+                        },
                     value = password,
                     onValueChange = onPasswordChange,
                     label = stringResource(R.string.create_account_password_label),
@@ -268,7 +286,8 @@ private fun CreateAccountContentPreviewLight() {
             onPasswordChange = {},
             onConfirmPasswordChange = {},
             onCreateAccountClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onConfirmPasswordFocusLost = {}
         )
     }
 }
@@ -292,7 +311,8 @@ private fun CreateAccountContentPreviewDark() {
             onPasswordChange = {},
             onConfirmPasswordChange = {},
             onCreateAccountClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onConfirmPasswordFocusLost = {}
         )
     }
 }
@@ -316,7 +336,8 @@ private fun CreateAccountContentErrorDark() {
             onPasswordChange = {},
             onConfirmPasswordChange = {},
             onCreateAccountClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onConfirmPasswordFocusLost = {}
         )
     }
 }
@@ -340,7 +361,8 @@ private fun CreateAccountContentErrorLight() {
             onPasswordChange = {},
             onConfirmPasswordChange = {},
             onCreateAccountClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onConfirmPasswordFocusLost = {}
         )
     }
 }
@@ -349,6 +371,9 @@ private fun CreateAccountContentErrorLight() {
 @Composable
 private fun CreateAccountScreenStatefulPreview() {
     AproveeTheme {
-        CreateAccountScreen()
+        CreateAccountScreen(
+            onNavigateToHome = {},
+            onNavigateBack = {}
+        )
     }
 }

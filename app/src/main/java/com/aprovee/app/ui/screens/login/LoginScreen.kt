@@ -37,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -64,10 +65,26 @@ import com.aprovee.app.ui.theme.AproveeTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
+    onNavigateToHome: () -> Unit,
+    onNavigateToCreateAccount: () -> Unit,
     viewModel: LoginViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+
+    LaunchedEffect(uiState.navigateToHome) {
+        if(uiState.navigateToHome) {
+            onNavigateToHome()
+            viewModel.onNavigateToHomeConsumed()
+        }
+    }
+
+    LaunchedEffect(uiState.navigateToCreateAccount) {
+        if(uiState.navigateToCreateAccount) {
+            onNavigateToCreateAccount()
+            viewModel.onNavigateToCreateAccountConsumed()
+        }
+    }
 
     LoginContent(
         email = uiState.email,
@@ -389,6 +406,9 @@ private fun LoginContentErrorDarkPreview() {
 @Composable
 private fun LoginScreenStatefulPreview() {
     AproveeTheme {
-        LoginScreen()
+        LoginScreen(
+            onNavigateToHome = {},
+            onNavigateToCreateAccount =  {}
+        )
     }
 }
