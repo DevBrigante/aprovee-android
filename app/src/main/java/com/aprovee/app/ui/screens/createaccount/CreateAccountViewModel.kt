@@ -29,17 +29,21 @@ class CreateAccountViewModel(
     }
 
     fun onConfirmPasswordChange(value: String) {
-        val error = if(value.isNotEmpty() && value != _uiState.value.password) {
-            "As senhas não condizem"
-        } else null
-        _uiState.update { it.copy(confirmPassword = value, confirmPasswordError = error) }
+        _uiState.update { it.copy(confirmPassword = value, confirmPasswordError = null) }
+    }
+
+    fun onConfirmPasswordFocusLost() {
+        val s = uiState.value
+        if (s.confirmPassword.isEmpty()) return
+        val error = if (s.confirmPassword != s.password) "As senhas não condizem" else null
+        _uiState.update { it.copy(confirmPasswordError = error) }
     }
 
     fun onCreateAccountClick() {
         val s = _uiState.value
         val nameError: String? = if(s.name.isBlank() || s.name.length > 20 ) "Seu nome atingiu o max de caracteres ou campo está vazio" else null
-        val emailError: String? = if (!s.email.contains("@") || !s.email.contains(".")) "E-mail inválido" else null
-        val passwordError: String? = if (s.password.length < 8) "A senha deve ter no mínimo 8 caracteres" else null
+        val emailError: String? = if(!s.email.contains("@") || !s.email.contains(".")) "E-mail inválido" else null
+        val passwordError: String? = if(s.password.length < 8) "A senha deve ter no mínimo 8 caracteres" else null
         val confirmPasswordError: String? = if(s.confirmPassword != s.password) "As senhas não condizem" else null
 
         _uiState.update { it.copy(
@@ -55,9 +59,11 @@ class CreateAccountViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             repository.createAccount(s.name, s.email, s.password)
-            _uiState.update { it.copy(isLoading = false, isSuccess = true) }
+            _uiState.update { it.copy(isLoading = false, navigateToHome = true, isSuccess = true) }
         }
+    }
 
-
+    fun onNavigateToHomeConsumed() {
+        _uiState.update { it.copy(navigateToHome = false) }
     }
 }

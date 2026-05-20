@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.aprovee.app.ui.screens.createaccount.CreateAccountScreen
 import com.aprovee.app.ui.screens.login.LoginScreen
 
 @Composable
@@ -24,13 +25,31 @@ fun AppNavHost() {
         startDestination = LoginRoute
     ) {
         composable<LoginRoute> {
-            LoginScreen()
+            LoginScreen(
+                onNavigateToHome = {
+                    navController.navigate(HomeRoute) {
+                        popUpTo(LoginRoute) { inclusive = true }
+                    }
+                },
+                onNavigateToCreateAccount = {
+                    navController.navigate(CreateAccountRoute)
+                }
+            )
+        }
+
+        composable<CreateAccountRoute> {
+            CreateAccountScreen(
+                onNavigateToHome = {
+                    navController.navigate(HomeRoute) {
+                        popUpTo(LoginRoute) { inclusive = true }
+                    }
+                },
+                onNavigateBack = { navController.popBackStack()}
+            )
         }
 
         composable<HomeRoute> {
-            PlaceholderScreen(
-                title = "Home"
-            )
+            PlaceholderScreen(title = "Home")
         }
     }
 }
