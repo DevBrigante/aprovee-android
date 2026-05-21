@@ -1,5 +1,11 @@
 package com.aprovee.app.ui.navigation
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +28,31 @@ fun AppNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = LoginRoute
+        startDestination = LoginRoute,
+        enterTransition = {
+            slideInHorizontally(
+                initialOffsetX =  { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(100, delayMillis = 120))
+        },
+        exitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> -fullWidth / 4 },
+                animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
+            ) + fadeOut(animationSpec = tween(durationMillis = 80))
+        },
+        popEnterTransition = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> -fullWidth / 4 },
+                animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(100, delayMillis = 120))
+        },
+        popExitTransition = {
+            slideOutHorizontally(
+                targetOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
+            ) + fadeOut(animationSpec = tween(80))
+        }
     ) {
         composable<LoginRoute> {
             LoginScreen(
