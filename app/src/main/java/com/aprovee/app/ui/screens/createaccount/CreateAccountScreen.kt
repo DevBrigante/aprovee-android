@@ -33,7 +33,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -198,11 +200,7 @@ private fun CreateAccountContent(
                 Spacer(modifier = Modifier.height(14.dp))
 
                 AproveeTextField(
-                    modifier = Modifier
-                        .focusRequester(passwordFocusRequester)
-                        .onFocusChanged { focusState ->
-                            if(!focusState.isFocused) onConfirmPasswordFocusLost()
-                        },
+                    modifier = Modifier.focusRequester(passwordFocusRequester),
                     value = password,
                     onValueChange = onPasswordChange,
                     label = stringResource(R.string.create_account_password_label),
@@ -217,7 +215,11 @@ private fun CreateAccountContent(
                 Spacer(modifier = Modifier.height(14.dp))
 
                 AproveeTextField(
-                    modifier = Modifier.focusRequester(confirmFocusRequester),
+                    modifier = Modifier
+                        .focusRequester(confirmFocusRequester)
+                        .onFocusChanged { focusState ->
+                            if(!focusState.isFocused) onConfirmPasswordFocusLost()
+                        },
                     value = confirmPassword,
                     onValueChange = onConfirmPasswordChange,
                     label = stringResource(R.string.create_account_confirm_label),
