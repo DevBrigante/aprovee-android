@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.aprovee.app.ui.screens.createaccount.CreateAccountScreen
 import com.aprovee.app.ui.screens.login.LoginScreen
@@ -28,7 +29,7 @@ fun AppNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = LoginRoute,
+        startDestination = AuthFlowRoute,
         enterTransition = {
             slideInHorizontally(
                 initialOffsetX =  { fullWidth -> fullWidth },
@@ -54,30 +55,36 @@ fun AppNavHost() {
             ) + fadeOut(animationSpec = tween(80))
         }
     ) {
-        composable<LoginRoute> {
-            LoginScreen(
-                onNavigateToHome = {
-                    navController.navigate(HomeRoute) {
-                        popUpTo(LoginRoute) { inclusive = true }
+        navigation<AuthFlowRoute>(startDestination = LoginRoute) {
+            composable<LoginRoute> {
+                LoginScreen(
+                    onNavigateToHome = {
+                        navController.navigate(HomeRoute) {
+                            popUpTo(AuthFlowRoute) { inclusive = true }
+                        }
+                    },
+                    onNavigateToCreateAccount = {
+                        navController.navigate(CreateAccountRoute)
                     }
-                },
-                onNavigateToCreateAccount = {
-                    navController.navigate(CreateAccountRoute)
-                }
-            )
+                )
+            }
+            composable<CreateAccountRoute> {
+                CreateAccountScreen(
+                    onNavigateToHome = {
+                        navController.navigate(HomeRoute) {
+                            popUpTo(AuthFlowRoute) { inclusive = true }
+                        }
+                    },
+                    onNavigateBack = { navController.popBackStack()}
+                )
+            }
+            composable<LoadingRoute> {
+                PlaceholderScreen(title = "Loading")
+            }
+            composable<WelcomeRoute> {
+                PlaceholderScreen(title = "Welcome")
+            }
         }
-
-        composable<CreateAccountRoute> {
-            CreateAccountScreen(
-                onNavigateToHome = {
-                    navController.navigate(HomeRoute) {
-                        popUpTo(LoginRoute) { inclusive = true }
-                    }
-                },
-                onNavigateBack = { navController.popBackStack()}
-            )
-        }
-
         composable<HomeRoute> {
             PlaceholderScreen(title = "Home")
         }
