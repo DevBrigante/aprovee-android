@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Aprovee</string>
-    <string name="splash_subtitle">Suas vendas, sempre sob controle</string>
     <string name="toggle_password_visibility">Alternar visibilidade da senha</string>
     <string name="login_subtitle">Bem-vindo! Organize seus clientes e \nas suas vendas.</string>
     <string name="login_email_label">E-mail</string>
@@ -39,4 +38,8 @@
     <string name="create_account_button">Criar conta</string>
     <string name="create_account_already_have">Já tem uma conta?</string>
     <string name="create_account_sign_in">Entrar</string>
+    <string name="loading_creating_account">Criando sua conta…</string>
+    <string name="welcome_title">Bem-vindo a Aprovee!</string>
+    <string name="welcome_subtitle">Sua conta foi criada com sucesso</string>
+    <string name="welcome_continue">Continuar</string>
 </resources>
