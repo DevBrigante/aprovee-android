@@ -20,6 +20,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import com.aprovee.app.ui.screens.auth.LoadingScreen
+import com.aprovee.app.ui.screens.auth.WelcomeScreen
 import com.aprovee.app.ui.screens.createaccount.CreateAccountScreen
 import com.aprovee.app.ui.screens.login.LoginScreen
 
@@ -71,7 +73,7 @@ fun AppNavHost() {
             composable<CreateAccountRoute> {
                 CreateAccountScreen(
                     onNavigateToHome = {
-                        navController.navigate(HomeRoute) {
+                        navController.navigate(LoadingRoute) {
                             popUpTo(AuthFlowRoute) { inclusive = true }
                         }
                     },
@@ -79,10 +81,14 @@ fun AppNavHost() {
                 )
             }
             composable<LoadingRoute> {
-                PlaceholderScreen(title = "Loading")
+                LoadingScreen()
             }
             composable<WelcomeRoute> {
-                PlaceholderScreen(title = "Welcome")
+                WelcomeScreen(onContinue = {
+                    navController.navigate(LoginRoute) {
+                        popUpTo(AuthFlowRoute) { inclusive = true }
+                    }
+                })
             }
         }
         composable<HomeRoute> {
