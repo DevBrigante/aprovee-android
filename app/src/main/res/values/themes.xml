@@ -1,4 +1,11 @@
 <resources>
-    <!-- Base theme required by AndroidManifest — Compose handles theming at runtime -->
+    <!-- Tema base do app (rodando) -->
     <style name="Theme.Aprovee" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <!-- Tema do splash (cold start) -->
+    <style name="Theme.Aprovee.Splash" parent = "Theme.SplashScreen">
+        <item name = "windowSplashScreenBackground">@color/splash_background</item>
+        <item name = "windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name = "postSplashScreenTheme">@style/Theme.Aprovee</item>
+    </style>
 </resources>

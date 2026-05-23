@@ -1,11 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Letter "A" centered in the safe zone (24dp inset on each side) -->
-    <path
-        android:fillColor="#FFFFFF"
-        android:pathData="M54,32 L38,76 L44,76 L47,68 L61,68 L64,76 L70,76 L54,32Z M49,62 L54,48 L59,62Z" />
+
+    <!-- Marca Aprovee: dois traços brancos arredondados dentro da safe zone (72×72) -->
+    <group
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:translateX="18"
+        android:translateY="18">
+
+        <!-- Perna esquerda do "A" -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="6"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M8,42 L24,6" />
+
+        <!-- Perna direita com o nó/gancho -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FFFFFF"
+            android:strokeWidth="6"
+            android:strokeLineCap="round"
+            android:strokeLineJoin="round"
+            android:pathData="M24,6 L36,30 L29,30 L40,18" />
+    </group>
 </vector>
