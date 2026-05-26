@@ -10,6 +10,5 @@ data class CreateAccountUiState(
     val passwordError: String? = null,
     val confirmPasswordError: String? = null,
     val isLoading: Boolean = false,
-    val isSuccess: Boolean = false,
-    val navigateToHome: Boolean = false
+    val navigateToLoading: Boolean = false,
 )

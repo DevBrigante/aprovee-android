@@ -14,13 +14,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.aprovee.app.ui.screens.auth.LoadingScreen
+import com.aprovee.app.ui.screens.auth.SignupFlowViewModel
 import com.aprovee.app.ui.screens.auth.WelcomeScreen
 import com.aprovee.app.ui.screens.createaccount.CreateAccountScreen
 import com.aprovee.app.ui.screens.login.LoginScreen
@@ -70,24 +73,41 @@ fun AppNavHost() {
                     }
                 )
             }
-            composable<CreateAccountRoute> {
+            composable<CreateAccountRoute> { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry(AuthFlowRoute)
+                }
+                val signupFlowViewModel: SignupFlowViewModel = viewModel(
+                    viewModelStoreOwner = parentEntry
+                )
                 CreateAccountScreen(
-                    onNavigateToHome = {
-                        navController.navigate(LoadingRoute) {
-                            popUpTo(AuthFlowRoute) { inclusive = true }
-                        }
+                    signupFlowViewModel = signupFlowViewModel,
+                    onNavigateToLoading = {
+                        navController.navigate(LoadingRoute)
                     },
                     onNavigateBack = { navController.popBackStack()}
                 )
             }
-            composable<LoadingRoute> {
-                LoadingScreen()
+            composable<LoadingRoute> { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry(AuthFlowRoute)
+                }
+                val signupFlowViewModel: SignupFlowViewModel = viewModel(
+                    viewModelStoreOwner = parentEntry
+                )
+                LoadingScreen(
+                    signupFlowViewModel = signupFlowViewModel,
+                    onNavigateToWelcome = {
+                        navController.navigate(WelcomeRoute)
+                    },
+                    onNavigateBackToCreateAccount = {
+                        navController.popBackStack()
+                    }
+                )
             }
             composable<WelcomeRoute> {
                 WelcomeScreen(onContinue = {
-                    navController.navigate(LoginRoute) {
-                        popUpTo(AuthFlowRoute) { inclusive = true }
-                    }
+                    navController.popBackStack<LoginRoute>(inclusive = false)
                 })
             }
         }
