@@ -1,18 +1,12 @@
 package com.aprovee.app.ui.screens.createaccount
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.aprovee.app.data.repository.FakeAuthRepository
-import com.aprovee.app.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
-class CreateAccountViewModel(
-    private val repository: AuthRepository = FakeAuthRepository()
-): ViewModel() {
+class CreateAccountViewModel(): ViewModel() {
     private val _uiState = MutableStateFlow(CreateAccountUiState())
     val uiState: StateFlow<CreateAccountUiState> = _uiState.asStateFlow()
 
@@ -56,14 +50,11 @@ class CreateAccountViewModel(
         val hasError = listOf(nameError, emailError, passwordError, confirmPasswordError).any { it!=null }
         if (hasError) return
 
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            repository.createAccount(s.name, s.email, s.password)
-            _uiState.update { it.copy(isLoading = false, navigateToHome = true, isSuccess = true) }
-        }
+        _uiState.update { it.copy(navigateToLoading = true) }
+
     }
 
-    fun onNavigateToHomeConsumed() {
-        _uiState.update { it.copy(navigateToHome = false) }
+    fun onNavigateToLoadingConsumed() {
+        _uiState.update { it.copy(navigateToLoading = false) }
     }
 }

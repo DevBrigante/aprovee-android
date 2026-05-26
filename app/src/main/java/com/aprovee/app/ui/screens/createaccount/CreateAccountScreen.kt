@@ -52,20 +52,27 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aprovee.app.R
 import com.aprovee.app.ui.components.AproveePrimaryButton
 import com.aprovee.app.ui.components.AproveeTextField
+import com.aprovee.app.ui.screens.auth.SignupFlowViewModel
 import com.aprovee.app.ui.theme.AproveeTheme
 
 @Composable
 fun CreateAccountScreen(
-    onNavigateToHome: () -> Unit,
+    signupFlowViewModel: SignupFlowViewModel,
+    onNavigateToLoading: () -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: CreateAccountViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.navigateToHome) {
-        if(uiState.navigateToHome) {
-            onNavigateToHome()
-            viewModel.onNavigateToHomeConsumed()
+    LaunchedEffect(uiState.navigateToLoading) {
+        if(uiState.navigateToLoading) {
+            signupFlowViewModel.submit(
+                name = uiState.name,
+                email = uiState.email,
+                password = uiState.password
+            )
+            onNavigateToLoading()
+            viewModel.onNavigateToLoadingConsumed()
         }
     }
 
@@ -365,17 +372,6 @@ private fun CreateAccountContentErrorLight() {
             onCreateAccountClick = {},
             onBackClick = {},
             onConfirmPasswordFocusLost = {}
-        )
-    }
-}
-
-@Preview(showBackground = true, name = "Stateful")
-@Composable
-private fun CreateAccountScreenStatefulPreview() {
-    AproveeTheme {
-        CreateAccountScreen(
-            onNavigateToHome = {},
-            onNavigateBack = {}
         )
     }
 }
