@@ -32,7 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aprovee.app.R
 import com.aprovee.app.ui.theme.AproveeTheme
 import com.aprovee.app.ui.theme.BackgroundDark
-import com.aprovee.app.ui.theme.Brand
+import com.aprovee.app.ui.theme.BrandDark
 
 @Composable
 fun LoadingScreen(
@@ -72,12 +72,12 @@ fun LoadingScreen(
         }
     }
 
-    LoadingContent(isDark = isSystemInDarkTheme())
+    LoadingContent(message = stringResource(R.string.loading_creating_account), isDark = isSystemInDarkTheme())
 }
 
 @Composable
-fun LoadingContent(isDark: Boolean = false) {
-    val backgroundColor = if (isDark) BackgroundDark else Brand
+fun LoadingContent(message: String, isDark: Boolean = false) {
+    val backgroundColor = if (isDark) BackgroundDark else BrandDark
 
     Box(
         modifier = Modifier
@@ -95,7 +95,7 @@ fun LoadingContent(isDark: Boolean = false) {
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
-                text = stringResource(R.string.loading_creating_account),
+                text = message,
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White
             )
@@ -107,7 +107,7 @@ fun LoadingContent(isDark: Boolean = false) {
 @Composable
 private fun LoadingScreenLightPreview() {
     AproveeTheme(darkTheme = false) {
-        LoadingContent(isDark = false)
+        LoadingContent(message = stringResource(R.string.loading_creating_account) , isDark = false)
     }
 }
 
@@ -115,6 +115,6 @@ private fun LoadingScreenLightPreview() {
 @Composable
 private fun LoadingScreenDarkPreview() {
     AproveeTheme(darkTheme = true) {
-        LoadingContent(isDark = true)
+        LoadingContent(message = stringResource(R.string.loading_creating_account), isDark = true)
     }
 }
