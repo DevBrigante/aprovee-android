@@ -10,15 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,7 +29,6 @@ import com.aprovee.app.R
 import com.aprovee.app.ui.components.AproveeIcon
 import com.aprovee.app.ui.theme.AproveeTheme
 import com.aprovee.app.ui.theme.BackgroundDark
-import com.aprovee.app.ui.theme.Brand
 import com.aprovee.app.ui.theme.BrandDark
 import com.aprovee.app.ui.theme.BrandLight
 
@@ -52,7 +47,7 @@ fun WelcomeContent(
     onContinue: () -> Unit,
     isDark: Boolean = false
 ) {
-    val backgroundColor = if(isDark) BackgroundDark else Brand
+    val backgroundColor = if(isDark) BackgroundDark else BrandDark
     val backgroundTint = if (isDark) BrandDark else BrandLight
 
     Box(

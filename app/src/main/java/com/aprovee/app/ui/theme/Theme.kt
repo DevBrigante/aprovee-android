@@ -11,10 +11,10 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val LightColorScheme = lightColorScheme(
-    primary          = Brand,
+    primary          = BrandDark,
     onPrimary        = SurfaceLight,
     primaryContainer = BrandTint,
-    onPrimaryContainer = BrandDark,
+    onPrimaryContainer = Brand,
     secondary        = AccentGold,
     onSecondary      = SurfaceLight,
     background       = BackgroundLight,
@@ -30,9 +30,9 @@ private val LightColorScheme = lightColorScheme(
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary          = Brand,
+    primary          = BrandDark,
     onPrimary        = TextPrimaryDark,
-    primaryContainer = BrandDark,
+    primaryContainer = Brand,
     onPrimaryContainer = BrandLight,
     secondary        = AccentGold,
     onSecondary      = TextPrimaryDark,
