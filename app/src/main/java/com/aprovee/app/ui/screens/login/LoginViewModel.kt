@@ -2,7 +2,7 @@ package com.aprovee.app.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aprovee.app.data.repository.FakeAuthRepository
+import com.aprovee.app.data.repository.FakeAuthRepositoryImpl
 import com.aprovee.app.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val authRepository: AuthRepository = FakeAuthRepository()
+    private val authRepository: AuthRepository = FakeAuthRepositoryImpl()
 ): ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()

@@ -42,4 +42,17 @@
     <string name="welcome_title">Bem-vindo a Aprovee!</string>
     <string name="welcome_subtitle">Sua conta foi criada com sucesso</string>
     <string name="welcome_continue">Continuar</string>
+    <string name="error_server_title">Algo deu errado</string>
+    <string name="error_server_subtitle">Não conseguimos criar a sua conta agora. Tente novamente em alguns instantes.</string>
+    <string name="error_no_connection_title">Sem conexão</string>
+    <string name="error_no_connection_subtitle">Verifique sua internet e tente novamente.</string>
+    <string name="error_timeout_title">A solicitação demorou demais</string>
+    <string name="error_timeout_subtitle">O servidor levou tempo demais para responder. Pode ser uma instabilidade temporária.</string>
+    <string name="error_maintenance_title">Estamos em manutenção</string>
+    <string name="error_maintenance_subtitle">Voltamos em alguns minutos. Estamos melhorando o Aprovee para você.</string>
+    <string name="error_retry_limit_title">Muitas tentativas seguidas</string>
+    <string name="error_retry_limit_subtitle">Você excedeu o limite de tentativas. Tente novamente mais tarde — já estamos trabalhando pra resolver.</string>
+    <string name="error_retry_limit_badge">LIMITE EXCEDIDO</string>
+    <string name="error_retry_button">Tentar novamente</string>
+    <string name="error_go_back_button">Voltar ao cadastro</string>
 </resources>

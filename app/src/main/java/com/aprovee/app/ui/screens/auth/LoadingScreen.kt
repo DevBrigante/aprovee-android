@@ -30,6 +30,8 @@ import androidx.credentials.CredentialManager
 import androidx.credentials.exceptions.CreateCredentialException
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aprovee.app.R
+import com.aprovee.app.domain.model.ErrorType
+import com.aprovee.app.domain.model.toRouteParam
 import com.aprovee.app.ui.theme.AproveeTheme
 import com.aprovee.app.ui.theme.BackgroundDark
 import com.aprovee.app.ui.theme.BrandDark
@@ -66,7 +68,7 @@ fun LoadingScreen(
             }
             is SignupState.Error -> {
                 signupFlowViewModel.onErrorAcknowledged()
-                onNavigateBackToCreateAccount(current.message)
+                onNavigateBackToCreateAccount(current.type.toRouteParam())
             }
             else -> Unit
         }
