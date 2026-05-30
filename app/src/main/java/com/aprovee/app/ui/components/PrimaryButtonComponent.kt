@@ -19,16 +19,11 @@ import com.aprovee.app.ui.theme.AproveeTheme
 
 @Composable
 fun AproveePrimaryButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    text: String, onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(50.dp),
+        modifier = modifier.fillMaxWidth().height(50.dp),
         enabled = enabled,
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(
@@ -50,16 +45,14 @@ fun AproveePrimaryButton(
 private fun AproveePrimaryButtonPreview() {
     AproveeTheme {
         Column(
-            modifier = Modifier
-                .padding(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             AproveePrimaryButton(
                 text = "Entrar",
                 onClick = {}
             )
             Spacer(
-                modifier = Modifier
-                    .height(12.dp)
+                modifier = Modifier.height(12.dp)
             )
             AproveePrimaryButton(
                 text = "Desabilitado",
