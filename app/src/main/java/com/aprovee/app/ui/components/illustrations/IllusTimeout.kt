@@ -27,7 +27,7 @@ fun IllusTimeout(
     isDark: Boolean = false
 ) {
     val stroke = if (isDark) TextPrimaryDark else TextPrimary
-    val accent = if(isDark) BrandDark else Brand
+    val accent = if (isDark) BrandDark else Brand
     val error = Error
 
     Canvas(modifier = modifier.size(size)) {
