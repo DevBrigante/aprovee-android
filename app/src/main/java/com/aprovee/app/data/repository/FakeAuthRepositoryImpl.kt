@@ -17,9 +17,7 @@ class FakeAuthRepositoryImpl : AuthRepository {
     }
 
     override suspend fun createAccount(
-        name: String,
-        email: String,
-        password: String
+        name: String, email: String, password: String
     ): Result<Unit> {
         delay(1500)
         return when (simulatedError) {

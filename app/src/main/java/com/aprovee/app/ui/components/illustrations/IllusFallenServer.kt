@@ -31,9 +31,7 @@ import com.aprovee.app.ui.theme.TextPrimaryDark
 
 @Composable
 fun IllusFallenServer(
-    modifier: Modifier = Modifier,
-    size: Dp = 160.dp,
-    isDark: Boolean = false
+    modifier: Modifier = Modifier, size: Dp = 160.dp, isDark: Boolean = false
 ) {
     val stroke = if (isDark) TextPrimaryDark else TextPrimary
     val accent = if (isDark) BrandDark else Brand
@@ -41,13 +39,9 @@ fun IllusFallenServer(
 
     val infiniteTransition = rememberInfiniteTransition(label = "led-blink")
     val ledAlpha by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 0.2f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(700),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "led-alpha"
+        initialValue = 1f, targetValue = 0.2f, animationSpec = infiniteRepeatable(
+            animation = tween(700), repeatMode = RepeatMode.Reverse
+        ), label = "led-alpha"
     )
 
     Canvas(modifier = modifier.size(size)) {
@@ -68,33 +62,89 @@ fun IllusFallenServer(
                 style = Stroke(width = 2f * s)
             )
 
-            drawLine(stroke, Offset(68f * s, 174f * s), Offset(68f * s, 182f * s), strokeWidth = 2f * s, cap = StrokeCap.Round)
-            drawLine(stroke, Offset(132f * s, 174f * s), Offset(132f * s, 182f * s),
-                strokeWidth = 2f * s, cap = StrokeCap.Round)
+            drawLine(
+                stroke,
+                Offset(68f * s, 174f * s),
+                Offset(68f * s, 182f * s),
+                strokeWidth = 2f * s,
+                cap = StrokeCap.Round
+            )
+            drawLine(
+                stroke,
+                Offset(132f * s, 174f * s),
+                Offset(132f * s, 182f * s),
+                strokeWidth = 2f * s,
+                cap = StrokeCap.Round
+            )
 
-            drawRoundRect(stroke, Offset(66f * s, 56f * s), Size(68f * s, 32f * s),
-                CornerRadius(3f * s), style = Stroke(1.5f * s))
+            drawRoundRect(
+                stroke,
+                Offset(66f * s, 56f * s),
+                Size(68f * s, 32f * s),
+                CornerRadius(3f * s),
+                style = Stroke(1.5f * s)
+            )
             drawCircle(accent, 2.5f * s, Offset(74f * s, 72f * s))
-            drawLine(stroke.copy(alpha = 0.5f), Offset(84f * s, 72f * s), Offset(104f * s, 72f * s),
-                strokeWidth = 1.5f * s, cap = StrokeCap.Round)
-            drawRoundRect(stroke.copy(alpha = 0.5f), Offset(114f * s, 66f * s), Size(14f * s, 12f * s),
-                CornerRadius(2f * s), style = Stroke(1.5f * s))
+            drawLine(
+                stroke.copy(alpha = 0.5f),
+                Offset(84f * s, 72f * s),
+                Offset(104f * s, 72f * s),
+                strokeWidth = 1.5f * s,
+                cap = StrokeCap.Round
+            )
+            drawRoundRect(
+                stroke.copy(alpha = 0.5f),
+                Offset(114f * s, 66f * s),
+                Size(14f * s, 12f * s),
+                CornerRadius(2f * s),
+                style = Stroke(1.5f * s)
+            )
 
-            drawRoundRect(error, Offset(66f * s, 94f * s), Size(68f * s, 32f * s),
-                CornerRadius(3f * s), style = Stroke(1.8f * s))
+            drawRoundRect(
+                error,
+                Offset(66f * s, 94f * s),
+                Size(68f * s, 32f * s),
+                CornerRadius(3f * s),
+                style = Stroke(1.8f * s)
+            )
             drawCircle(error.copy(alpha = ledAlpha), 2.5f * s, Offset(74f * s, 110f * s))
-            drawLine(error.copy(alpha = 0.55f), Offset(84f * s, 110f * s), Offset(104f * s, 110f * s),
-                strokeWidth = 1.5f * s, cap = StrokeCap.Round)
-            drawRoundRect(error.copy(alpha = 0.55f), Offset(114f * s, 104f * s), Size(14f * s, 12f * s),
-                CornerRadius(2f * s), style = Stroke(1.5f * s))
+            drawLine(
+                error.copy(alpha = 0.55f),
+                Offset(84f * s, 110f * s),
+                Offset(104f * s, 110f * s),
+                strokeWidth = 1.5f * s,
+                cap = StrokeCap.Round
+            )
+            drawRoundRect(
+                error.copy(alpha = 0.55f),
+                Offset(114f * s, 104f * s),
+                Size(14f * s, 12f * s),
+                CornerRadius(2f * s),
+                style = Stroke(1.5f * s)
+            )
 
-            drawRoundRect(stroke, Offset(66f * s, 132f * s), Size(68f * s, 32f * s),
-                CornerRadius(3f * s), style = Stroke(1.5f * s))
+            drawRoundRect(
+                stroke,
+                Offset(66f * s, 132f * s),
+                Size(68f * s, 32f * s),
+                CornerRadius(3f * s),
+                style = Stroke(1.5f * s)
+            )
             drawCircle(accent.copy(alpha = 0.45f), 2.5f * s, Offset(74f * s, 148f * s))
-            drawLine(stroke.copy(alpha = 0.5f), Offset(84f * s, 148f * s), Offset(104f * s, 148f * s),
-                strokeWidth = 1.5f * s, cap = StrokeCap.Round)
-            drawRoundRect(stroke.copy(alpha = 0.5f), Offset(114f * s, 142f * s), Size(14f * s, 12f * s),
-                CornerRadius(2f * s), style = Stroke(1.5f * s))
+            drawLine(
+                stroke.copy(alpha = 0.5f),
+                Offset(84f * s, 148f * s),
+                Offset(104f * s, 148f * s),
+                strokeWidth = 1.5f * s,
+                cap = StrokeCap.Round
+            )
+            drawRoundRect(
+                stroke.copy(alpha = 0.5f),
+                Offset(114f * s, 142f * s),
+                Size(14f * s, 12f * s),
+                CornerRadius(2f * s),
+                style = Stroke(1.5f * s)
+            )
         }
 
         val sparkPath = Path().apply {
@@ -102,8 +152,9 @@ fun IllusFallenServer(
             quadraticTo(168f * s, 58f * s, 162f * s, 50f * s)
             quadraticTo(156f * s, 42f * s, 174f * s, 38f * s)
         }
-        drawPath(sparkPath, error.copy(alpha = 0.85f),
-            style = Stroke(2f * s, cap = StrokeCap.Round))
+        drawPath(
+            sparkPath, error.copy(alpha = 0.85f), style = Stroke(2f * s, cap = StrokeCap.Round)
+        )
         drawCircle(error.copy(alpha = 0.85f), 2.5f * s, Offset(178f * s, 34f * s))
         drawCircle(error.copy(alpha = 0.6f), 1.6f * s, Offset(170f * s, 44f * s))
 
@@ -114,12 +165,14 @@ fun IllusFallenServer(
             lineTo(50f * s, 52f * s)
         }
 
-        drawPath(zPath, accent.copy(alpha = 0.8f),
-            style = Stroke(2f * s, cap = StrokeCap.Round, join = StrokeJoin.Round))
+        drawPath(
+            zPath,
+            accent.copy(alpha = 0.8f),
+            style = Stroke(2f * s, cap = StrokeCap.Round, join = StrokeJoin.Round)
+        )
     }
 
 }
-
 
 
 @Preview(showBackground = true, backgroundColor = 0xFFF8FAFC)

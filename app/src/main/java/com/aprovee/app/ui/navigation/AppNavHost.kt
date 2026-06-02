@@ -22,6 +22,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import com.aprovee.app.domain.model.toErrorType
+import com.aprovee.app.ui.screens.auth.ErrorScreen
 import com.aprovee.app.ui.screens.auth.LoadingScreen
 import com.aprovee.app.ui.screens.auth.SignupFlowViewModel
 import com.aprovee.app.ui.screens.auth.WelcomeScreen
@@ -32,46 +35,36 @@ import com.aprovee.app.ui.screens.login.LoginScreen
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(
-        navController = navController,
-        startDestination = AuthFlowRoute,
-        enterTransition = {
-            slideInHorizontally(
-                initialOffsetX =  { fullWidth -> fullWidth },
-                animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
-            ) + fadeIn(animationSpec = tween(100, delayMillis = 120))
-        },
-        exitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { fullWidth -> -fullWidth / 4 },
-                animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
-            ) + fadeOut(animationSpec = tween(durationMillis = 80))
-        },
-        popEnterTransition = {
-            slideInHorizontally(
-                initialOffsetX = { fullWidth -> -fullWidth / 4 },
-                animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
-            ) + fadeIn(animationSpec = tween(100, delayMillis = 120))
-        },
-        popExitTransition = {
-            slideOutHorizontally(
-                targetOffsetX = { fullWidth -> fullWidth },
-                animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
-            ) + fadeOut(animationSpec = tween(80))
-        }
-    ) {
+    NavHost(navController = navController, startDestination = AuthFlowRoute, enterTransition = {
+        slideInHorizontally(
+            initialOffsetX = { fullWidth -> fullWidth },
+            animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
+        ) + fadeIn(animationSpec = tween(100, delayMillis = 120))
+    }, exitTransition = {
+        slideOutHorizontally(
+            targetOffsetX = { fullWidth -> -fullWidth / 4 },
+            animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
+        ) + fadeOut(animationSpec = tween(durationMillis = 80))
+    }, popEnterTransition = {
+        slideInHorizontally(
+            initialOffsetX = { fullWidth -> -fullWidth / 4 },
+            animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
+        ) + fadeIn(animationSpec = tween(100, delayMillis = 120))
+    }, popExitTransition = {
+        slideOutHorizontally(
+            targetOffsetX = { fullWidth -> fullWidth },
+            animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
+        ) + fadeOut(animationSpec = tween(80))
+    }) {
         navigation<AuthFlowRoute>(startDestination = LoginRoute) {
             composable<LoginRoute> {
-                LoginScreen(
-                    onNavigateToHome = {
-                        navController.navigate(HomeRoute) {
-                            popUpTo(AuthFlowRoute) { inclusive = true }
-                        }
-                    },
-                    onNavigateToCreateAccount = {
-                        navController.navigate(CreateAccountRoute)
+                LoginScreen(onNavigateToHome = {
+                    navController.navigate(HomeRoute) {
+                        popUpTo(AuthFlowRoute) { inclusive = true }
                     }
-                )
+                }, onNavigateToCreateAccount = {
+                    navController.navigate(CreateAccountRoute)
+                })
             }
             composable<CreateAccountRoute> { backStackEntry ->
                 val parentEntry = remember(backStackEntry) {
@@ -85,8 +78,7 @@ fun AppNavHost() {
                     onNavigateToLoading = {
                         navController.navigate(LoadingRoute)
                     },
-                    onNavigateBack = { navController.popBackStack()}
-                )
+                    onNavigateBack = { navController.popBackStack() })
             }
             composable<LoadingRoute> { backStackEntry ->
                 val parentEntry = remember(backStackEntry) {
@@ -95,16 +87,31 @@ fun AppNavHost() {
                 val signupFlowViewModel: SignupFlowViewModel = viewModel(
                     viewModelStoreOwner = parentEntry
                 )
-                LoadingScreen(
-                    signupFlowViewModel = signupFlowViewModel,
-                    onNavigateToWelcome = {
-                        navController.navigate(WelcomeRoute)
-                    },
-                    onNavigateBackToCreateAccount = {
-                        navController.popBackStack()
-                    }
-                )
+                LoadingScreen(signupFlowViewModel = signupFlowViewModel, onNavigateToWelcome = {
+                    navController.navigate(WelcomeRoute)
+                }, onNavigateToError = { errorType ->
+                    navController.navigate(ErrorRoute(errorType))
+                })
             }
+            composable<ErrorRoute> { backStackEntry ->
+                val parentEntry = remember(backStackEntry) {
+                    navController.getBackStackEntry(AuthFlowRoute)
+                }
+                val signupFlowViewModel: SignupFlowViewModel = viewModel(
+                    viewModelStoreOwner = parentEntry
+                )
+                val errorRoute = backStackEntry.toRoute<ErrorRoute>()
+                ErrorScreen(
+                    errorType = errorRoute.errorType.toErrorType(),
+                    signupFlowViewModel = signupFlowViewModel,
+                    onRetry = {
+                        navController.popBackStack()
+                    },
+                    onGoBack = {
+                        navController.popBackStack<CreateAccountRoute>(inclusive = false)
+                    })
+            }
+
             composable<WelcomeRoute> {
                 WelcomeScreen(onContinue = {
                     navController.popBackStack<LoginRoute>(inclusive = false)
@@ -119,21 +126,17 @@ fun AppNavHost() {
 
 @Composable
 private fun PlaceholderScreen(
-    title: String,
-    onNavigate: (() -> Unit)? = null
+    title: String, onNavigate: (() -> Unit)? = null
 ) {
     Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background
+        modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
     ) {
         Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineLarge
+                    text = title, style = MaterialTheme.typography.headlineLarge
                 )
                 if (onNavigate != null) {
                     Button(onClick = onNavigate) {
