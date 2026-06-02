@@ -38,7 +38,7 @@ fun AppNavHost() {
     NavHost(navController = navController, startDestination = AuthFlowRoute, enterTransition = {
         slideInHorizontally(
             initialOffsetX = { fullWidth -> fullWidth },
-            animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
+            animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
         ) + fadeIn(animationSpec = tween(100, delayMillis = 120))
     }, exitTransition = {
         slideOutHorizontally(
@@ -48,7 +48,7 @@ fun AppNavHost() {
     }, popEnterTransition = {
         slideInHorizontally(
             initialOffsetX = { fullWidth -> -fullWidth / 4 },
-            animationSpec = tween(durationMillis = 150, easing = FastOutSlowInEasing)
+            animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
         ) + fadeIn(animationSpec = tween(100, delayMillis = 120))
     }, popExitTransition = {
         slideOutHorizontally(

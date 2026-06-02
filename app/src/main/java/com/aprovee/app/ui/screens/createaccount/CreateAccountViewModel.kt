@@ -35,7 +35,11 @@ class CreateAccountViewModel(): ViewModel() {
 
     fun onCreateAccountClick() {
         val s = _uiState.value
-        val nameError: String? = if(s.name.isBlank() || s.name.length > 20 ) "Seu nome atingiu o max de caracteres ou campo está vazio" else null
+        val nameError: String? = when {
+            s.name.isBlank() -> "O campo está vazio, por favor digite um nome válido"
+            s.name.length > 50 -> "Nome muito longo (máximo 50 caracteres), por favor digite um nome válido"
+            else -> null
+        }
         val emailError: String? = if(!s.email.contains("@") || !s.email.contains(".")) "E-mail inválido" else null
         val passwordError: String? = if(s.password.length < 8) "A senha deve ter no mínimo 8 caracteres" else null
         val confirmPasswordError: String? = if(s.confirmPassword != s.password) "As senhas não condizem" else null
