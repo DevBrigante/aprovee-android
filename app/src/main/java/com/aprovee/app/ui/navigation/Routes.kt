@@ -14,4 +14,6 @@ data object LoadingRoute
 @Serializable
 data object WelcomeRoute
 @Serializable
+data class ErrorRoute(val errorType: String)
+@Serializable
 data object HomeRoute

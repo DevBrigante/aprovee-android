@@ -52,27 +52,30 @@ fun ErrorScreen(
     val subtitle: String
     val illustration: @Composable () -> Unit
 
-    if(retryLimitExceeded) {
+    if (retryLimitExceeded) {
         title = stringResource(R.string.error_retry_limit_title)
         subtitle = stringResource(R.string.error_retry_limit_subtitle)
         illustration = { IllusFallenServer(isDark = isDark) }
     } else {
-        when(errorType) {
+        when (errorType) {
             ErrorType.ServerError -> {
                 title = stringResource(R.string.error_server_title)
                 subtitle = stringResource(R.string.error_server_subtitle)
                 illustration = { IllusFallenServer(isDark = isDark) }
             }
+
             ErrorType.NoConnection -> {
                 title = stringResource(R.string.error_no_connection_title)
                 subtitle = stringResource(R.string.error_no_connection_subtitle)
                 illustration = { IllusOffline(isDark = isDark) }
             }
+
             ErrorType.Timeout -> {
                 title = stringResource(R.string.error_timeout_title)
                 subtitle = stringResource(R.string.error_timeout_subtitle)
                 illustration = { IllusTimeout(isDark = isDark) }
             }
+
             ErrorType.Maintenance -> {
                 title = stringResource(R.string.error_maintenance_title)
                 subtitle = stringResource(R.string.error_maintenance_subtitle)
@@ -94,8 +97,7 @@ fun ErrorScreen(
         onGoBack = {
             signupFlowViewModel.onErrorAcknowledged()
             onGoBack()
-        }
-    )
+        })
 }
 
 @Composable
@@ -109,16 +111,12 @@ fun ErrorContent(
     onGoBack: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
             .windowInsetsPadding(WindowInsets.systemBars)
     ) {
         IconButton(
             onClick = onGoBack,
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(start = 8.dp, top = 8.dp)
+            modifier = Modifier.align(Alignment.TopStart).padding(start = 8.dp, top = 8.dp)
         ) {
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.ArrowBack,
@@ -128,9 +126,7 @@ fun ErrorContent(
         }
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp),
+            modifier = Modifier.fillMaxSize().padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -139,14 +135,11 @@ fun ErrorContent(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            if(retryLimitExceeded) {
+            if (retryLimitExceeded) {
                 Box(
-                    modifier = Modifier
-                        .background(
-                            color = MaterialTheme.colorScheme.error,
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(horizontal = 12.dp, vertical = 4.dp)
+                    modifier = Modifier.background(
+                        color = MaterialTheme.colorScheme.error, shape = RoundedCornerShape(12.dp)
+                    ).padding(horizontal = 12.dp, vertical = 4.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.error_retry_limit_badge),
@@ -174,19 +167,16 @@ fun ErrorContent(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            if(showRetryButton) {
+            if (showRetryButton) {
                 AproveePrimaryButton(
-                    text = stringResource(R.string.error_retry_button),
-                    onClick = onRetry
+                    text = stringResource(R.string.error_retry_button), onClick = onRetry
                 )
                 Spacer(modifier = Modifier.height(12.dp))
             }
 
             OutlinedButton(
                 onClick = onGoBack,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
+                modifier = Modifier.fillMaxWidth().height(50.dp),
                 shape = RoundedCornerShape(12.dp)
             ) {
                 Text(
@@ -214,8 +204,7 @@ private fun ErrorServerLightPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -230,8 +219,7 @@ private fun ErrorServerDarkPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -246,8 +234,7 @@ private fun ErrorNoConnectionLightPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -262,8 +249,7 @@ private fun ErrorNoConnectionDarkPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -278,8 +264,7 @@ private fun ErrorTimeoutLightPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -294,8 +279,7 @@ private fun ErrorTimeoutDarkPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -310,8 +294,7 @@ private fun ErrorMaintenanceLightPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -326,8 +309,7 @@ private fun ErrorMaintenanceDarkPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -342,8 +324,7 @@ private fun ErrorRetryLimitLightPreview() {
             showRetryButton = false,
             retryLimitExceeded = true,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }
 
@@ -358,7 +339,6 @@ private fun ErrorRetryLimitDarkPreview() {
             showRetryButton = false,
             retryLimitExceeded = true,
             onRetry = {},
-            onGoBack = {}
-        )
+            onGoBack = {})
     }
 }

@@ -37,12 +37,10 @@ class SignupFlowViewModel(
         viewModelScope.launch {
             _uiState.update { SignupState.Loading }
 
-            repository.createAccount(name, email, password)
-                .onSuccess {
+            repository.createAccount(name, email, password).onSuccess {
                     _retryCount = 0
                     _uiState.update { SignupState.Success(email, password) }
-                }
-                .onFailure { throwable ->
+                }.onFailure { throwable ->
                     val errorType = when (throwable) {
                         is SocketTimeoutException -> ErrorType.Timeout
                         is IOException -> ErrorType.NoConnection

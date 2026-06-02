@@ -51,7 +51,7 @@
     <string name="error_maintenance_title">Estamos em manutenção</string>
     <string name="error_maintenance_subtitle">Voltamos em alguns minutos. Estamos melhorando o Aprovee para você.</string>
     <string name="error_retry_limit_title">Muitas tentativas seguidas</string>
-    <string name="error_retry_limit_subtitle">Você excedeu o limite de tentativas. Tente novamente mais tarde — já estamos trabalhando pra resolver.</string>
+    <string name="error_retry_limit_subtitle">Você excedeu o limite de tentativas. Tente novamente mais tarde.</string>
     <string name="error_retry_limit_badge">LIMITE EXCEDIDO</string>
     <string name="error_retry_button">Tentar novamente</string>
     <string name="error_go_back_button">Voltar ao cadastro</string>
