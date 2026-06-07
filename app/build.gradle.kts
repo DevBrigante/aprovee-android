@@ -6,17 +6,18 @@ plugins {
 
 android {
     namespace = "com.aprovee.app"
-    compileSdk = 37
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.aprovee.app"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    lint { disable += "OldTargetApi" }
 
     buildTypes {
         debug {
