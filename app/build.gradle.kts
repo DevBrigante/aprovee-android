@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.animation.graphics)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -59,6 +60,7 @@ dependencies {
     implementation(libs.androidx.compose.foundation.layout)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.credentials)
+    implementation(libs.androidx.compose.animation.graphics)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.androidx.compose.ui)
 

@@ -14,11 +14,11 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
-import com.aprovee.app.ui.theme.Brand
-import com.aprovee.app.ui.theme.BrandDark
-import com.aprovee.app.ui.theme.Error
-import com.aprovee.app.ui.theme.TextPrimary
-import com.aprovee.app.ui.theme.TextPrimaryDark
+import com.aprovee.app.ui.theme.OverdueLight
+import com.aprovee.app.ui.theme.PrimaryDark
+import com.aprovee.app.ui.theme.PrimaryLight
+import com.aprovee.app.ui.theme.TextDark
+import com.aprovee.app.ui.theme.TextLight
 
 @Composable
 fun IllusOffline(
@@ -26,9 +26,9 @@ fun IllusOffline(
     size: Dp = 160.dp,
     isDark: Boolean = false
 ) {
-    val stroke = if (isDark) TextPrimaryDark else TextPrimary
-    val accent = if (isDark) BrandDark else Brand
-    val error = Error
+    val stroke = if (isDark) TextDark else TextLight
+    val accent = if (isDark) PrimaryDark else PrimaryLight
+    val error  = OverdueLight
 
     Canvas(modifier = modifier.size(size)) {
         val s = this.size.width / 200f

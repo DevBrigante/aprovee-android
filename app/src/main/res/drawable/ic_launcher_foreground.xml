@@ -1,32 +1,36 @@
+<!-- Marca Aprovee: A simétrico fechado por um check, em branco sobre o fundo teal.
+     Mesma geometria do logo da splash (avd_aprovee_logo), porém estático.
+     Conteúdo centralizado dentro da safe zone do adaptive icon (scale 0.9 + translate). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Marca Aprovee: dois traços brancos arredondados dentro da safe zone (72×72) -->
     <group
-        android:scaleX="1.5"
-        android:scaleY="1.5"
-        android:translateX="18"
-        android:translateY="18">
+        android:pivotX="50"
+        android:pivotY="50"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:translateX="4"
+        android:translateY="4">
 
-        <!-- Perna esquerda do "A" -->
+        <!-- A simétrico (duas pernas) -->
         <path
             android:fillColor="#00000000"
             android:strokeColor="#FFFFFF"
-            android:strokeWidth="6"
+            android:strokeWidth="10"
             android:strokeLineCap="round"
             android:strokeLineJoin="round"
-            android:pathData="M8,42 L24,6" />
+            android:pathData="M30,74 L50,26 L70,74" />
 
-        <!-- Perna direita com o nó/gancho -->
+        <!-- Check que fecha o A -->
         <path
             android:fillColor="#00000000"
             android:strokeColor="#FFFFFF"
-            android:strokeWidth="6"
+            android:strokeWidth="9"
             android:strokeLineCap="round"
             android:strokeLineJoin="round"
-            android:pathData="M24,6 L36,30 L29,30 L40,18" />
+            android:pathData="M37,57 L47,66 L64,45" />
     </group>
 </vector>

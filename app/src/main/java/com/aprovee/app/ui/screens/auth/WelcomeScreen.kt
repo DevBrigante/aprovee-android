@@ -28,9 +28,10 @@ import androidx.compose.ui.unit.dp
 import com.aprovee.app.R
 import com.aprovee.app.ui.components.AproveeIcon
 import com.aprovee.app.ui.theme.AproveeTheme
-import com.aprovee.app.ui.theme.BackgroundDark
-import com.aprovee.app.ui.theme.BrandDark
-import com.aprovee.app.ui.theme.BrandLight
+import com.aprovee.app.ui.theme.BgDark
+import com.aprovee.app.ui.theme.PrimaryBrightLight
+import com.aprovee.app.ui.theme.PrimaryDark
+import com.aprovee.app.ui.theme.SplashBgLight
 
 @Composable
 fun WelcomeScreen(
@@ -47,8 +48,8 @@ fun WelcomeContent(
     onContinue: () -> Unit,
     isDark: Boolean = false
 ) {
-    val backgroundColor = if(isDark) BackgroundDark else BrandDark
-    val backgroundTint = if (isDark) BrandDark else BrandLight
+    val backgroundColor = if (isDark) BgDark else SplashBgLight
+    val backgroundTint  = if (isDark) PrimaryDark else PrimaryBrightLight
 
     Box(
         modifier = Modifier

@@ -30,7 +30,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aprovee.app.R
 import com.aprovee.app.domain.model.toRouteParam
 import com.aprovee.app.ui.theme.AproveeTheme
-import com.aprovee.app.ui.theme.BrandDark
 
 @Composable
 fun LoadingScreen(
@@ -84,9 +83,9 @@ fun LoadingContent(message: String) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             CircularProgressIndicator(
                 modifier = Modifier.size(48.dp),
-                color = BrandDark,
+                color = MaterialTheme.colorScheme.primary,
                 strokeWidth = 3.dp,
-                trackColor = BrandDark.copy(alpha = 0.2f)
+                trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
