@@ -27,6 +27,7 @@ import com.aprovee.app.domain.model.toErrorType
 import com.aprovee.app.ui.screens.auth.ErrorScreen
 import com.aprovee.app.ui.screens.auth.LoadingScreen
 import com.aprovee.app.ui.screens.auth.SignupFlowViewModel
+import com.aprovee.app.ui.screens.auth.SplashScreen
 import com.aprovee.app.ui.screens.auth.WelcomeScreen
 import com.aprovee.app.ui.screens.createaccount.CreateAccountScreen
 import com.aprovee.app.ui.screens.login.LoginScreen
@@ -35,7 +36,7 @@ import com.aprovee.app.ui.screens.login.LoginScreen
 fun AppNavHost() {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = AuthFlowRoute, enterTransition = {
+    NavHost(navController = navController, startDestination = SplashRoute, enterTransition = {
         slideInHorizontally(
             initialOffsetX = { fullWidth -> fullWidth },
             animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
@@ -56,8 +57,21 @@ fun AppNavHost() {
             animationSpec = tween(durationMillis = 220, easing = FastOutSlowInEasing)
         ) + fadeOut(animationSpec = tween(80))
     }) {
+
+        composable<SplashRoute>(
+            exitTransition = { fadeOut(animationSpec = tween(durationMillis = 400 )) }
+        ) {
+            SplashScreen(onTimeout = {
+                navController.navigate(AuthFlowRoute) {
+                    popUpTo(SplashRoute) { inclusive = true }
+                }
+            })
+        }
+
         navigation<AuthFlowRoute>(startDestination = LoginRoute) {
-            composable<LoginRoute> {
+            composable<LoginRoute>(
+                enterTransition = { fadeIn(animationSpec = tween(durationMillis = 400)) }
+            ) {
                 LoginScreen(onNavigateToHome = {
                     navController.navigate(HomeRoute) {
                         popUpTo(AuthFlowRoute) { inclusive = true }

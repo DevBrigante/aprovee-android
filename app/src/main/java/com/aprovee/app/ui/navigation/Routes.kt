@@ -17,3 +17,5 @@ data object WelcomeRoute
 data class ErrorRoute(val errorType: String)
 @Serializable
 data object HomeRoute
+@Serializable
+data object SplashRoute

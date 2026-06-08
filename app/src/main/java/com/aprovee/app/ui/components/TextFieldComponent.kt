@@ -38,7 +38,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import com.aprovee.app.R
-import com.aprovee.app.ui.theme.Label
 @Composable
 fun AproveeTextField(
     value: String,
@@ -79,7 +78,7 @@ fun AproveeTextField(
                 Text(
                     text = placeholder,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Label
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             },
         isError = isError,

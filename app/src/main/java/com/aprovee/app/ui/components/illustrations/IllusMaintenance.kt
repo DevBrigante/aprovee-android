@@ -14,10 +14,10 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.aprovee.app.ui.theme.Brand
-import com.aprovee.app.ui.theme.BrandDark
-import com.aprovee.app.ui.theme.TextPrimary
-import com.aprovee.app.ui.theme.TextPrimaryDark
+import com.aprovee.app.ui.theme.PrimaryDark
+import com.aprovee.app.ui.theme.PrimaryLight
+import com.aprovee.app.ui.theme.TextDark
+import com.aprovee.app.ui.theme.TextLight
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -27,8 +27,8 @@ fun IllusMaintenance(
     size: Dp = 160.dp,
     isDark: Boolean = false
 ) {
-    val stroke = if (isDark) TextPrimaryDark else TextPrimary
-    val accent = if (isDark) BrandDark else Brand
+    val stroke = if (isDark) TextDark else TextLight
+    val accent = if (isDark) PrimaryDark else PrimaryLight
 
     Canvas(modifier = modifier.size(size)) {
         val s = this.size.width / 200f
