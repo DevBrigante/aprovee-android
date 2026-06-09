@@ -12,20 +12,16 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val authRepository: AuthRepository = FakeAuthRepositoryImpl()
-): ViewModel() {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     fun onEmailChange(value: String) {
-        _uiState.update { it.copy(email = value, emailError = null) }
+        _uiState.update { it.copy(email = value, emailError = null, credentialError = null) }
     }
 
     fun onPasswordChange(value: String) {
-        _uiState.update { it.copy(password = value, passwordError = null) }
-    }
-
-    fun onRememberMeChange() {
-        _uiState.update { it.copy(isRememberMeChecked = !it.isRememberMeChecked) }
+        _uiState.update { it.copy(password = value, passwordError = null, credentialError = null) }
     }
 
     fun onForgetPasswordClick() {
@@ -43,7 +39,7 @@ class LoginViewModel(
             !email.contains("@") || !email.contains(".") -> "E-mail inválido"
             else -> null
         }
-        if(emailError != null) {
+        if (emailError != null) {
             _uiState.update { it.copy(forgotPasswordEmailError = emailError) }
             return
         }
@@ -51,11 +47,9 @@ class LoginViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(forgotPasswordState = ForgotPasswordState.Loading) }
 
-            authRepository.sendPasswordReset(email)
-                .onSuccess {
+            authRepository.sendPasswordReset(email).onSuccess {
                     _uiState.update { it.copy(forgotPasswordState = ForgotPasswordState.Sent(email)) }
-                }
-                .onFailure {
+                }.onFailure {
                     _uiState.update {
                         it.copy(
                             forgotPasswordState = ForgotPasswordState.Input,
@@ -93,21 +87,37 @@ class LoginViewModel(
         val currentState = _uiState.value
 
         val emailError = when {
-            currentState.email.isEmpty() -> "Informe seu e-mail"
+            currentState.email.isEmpty() -> "Campo obrigatório"
             !currentState.email.contains("@") || !currentState.email.contains(".") -> "E-mail inválido"
             else -> null
         }
 
         val passwordError = when {
-            currentState.password.isEmpty() -> "Informe sua senha"
+            currentState.password.isEmpty() -> "Campo obrigatório"
             currentState.password.length < 8 -> "A senha deve ter no mínimo 8 caracteres"
             else -> null
         }
 
-        if(emailError != null || passwordError != null) {
+        if (emailError != null || passwordError != null) {
             _uiState.update { it.copy(emailError = emailError, passwordError = passwordError) }
-        } else {
-            _uiState.update { it.copy(navigateToHome = true) }
+            return
+        }
+
+        if(currentState.isLoading) return
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, credentialError = null) }
+
+            authRepository.login(currentState.email, currentState.password).onSuccess {
+                    _uiState.update { it.copy(isLoading = false, navigateToHome = true) }
+                }.onFailure {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            credentialError = "E-mail ou senha incorretos. Tente novamente."
+                        )
+                    }
+                }
         }
     }
 }

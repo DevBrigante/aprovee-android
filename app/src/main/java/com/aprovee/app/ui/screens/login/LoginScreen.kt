@@ -1,7 +1,9 @@
 package com.aprovee.app.ui.screens.login
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,9 +13,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -23,12 +23,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
@@ -36,23 +38,28 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -91,13 +98,13 @@ fun LoginScreen(
         password = uiState.password,
         emailError = uiState.emailError,
         passwordError = uiState.passwordError,
-        isRememberMeChecked = uiState.isRememberMeChecked,
-        onRememberMeChange = viewModel::onRememberMeChange,
+        credentialError = uiState.credentialError,
+        isLoading = uiState.isLoading,
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
         onSignInClick = viewModel::onSignClick,
         onForgotPasswordClick = viewModel::onForgetPasswordClick,
-        onCreateAccountClick = viewModel::onCreateAccountClick
+        onCreateAccountClick = viewModel::onCreateAccountClick,
     )
 
     if(uiState.showForgotPasswordSheet) {
@@ -123,15 +130,17 @@ private fun LoginContent(
     password: String,
     emailError: String?,
     passwordError: String?,
-    isRememberMeChecked: Boolean,
+    credentialError: String?,
+    isLoading: Boolean,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onRememberMeChange: () -> Unit,
     onForgotPasswordClick: () -> Unit,
     onSignInClick: () -> Unit,
     onCreateAccountClick: () -> Unit
 ) {
     val passwordFocusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -140,25 +149,32 @@ private fun LoginContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures(onTap = { focusManager.clearFocus() })
+                }
                 .imePadding()
                 .verticalScroll(rememberScrollState())
                 .windowInsetsPadding(WindowInsets.statusBars)
-                .padding(horizontal = 28.dp, vertical = 32.dp),
+                .padding(horizontal = 28.dp, vertical = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AproveeIcon(size = 72.dp)
             Spacer(Modifier.height(14.dp))
 
+            val wordmarkColor = MaterialTheme.colorScheme.onBackground
+            val wordmarkAccent = MaterialTheme.colorScheme.primary
             Text(
-                text = stringResource(R.string.app_name),
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                text = buildAnnotatedString {
+                    withStyle(SpanStyle(color = wordmarkColor)) { append("aprov") }
+                    withStyle(SpanStyle(color = wordmarkAccent)) { append("ee") }
+                },
+                style = MaterialTheme.typography.displayLarge
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = stringResource(R.string.login_subtitle),
-                style = MaterialTheme.typography.bodySmall,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -169,6 +185,7 @@ private fun LoginContent(
                 keyboardActions = KeyboardActions(onNext = { passwordFocusRequester.requestFocus() }),
                 value = email,
                 onValueChange = onEmailChange,
+                leadingIcon = Icons.Outlined.Email,
                 label = stringResource(R.string.login_email_label),
                 placeholder = stringResource(R.string.login_email_placeholder),
                 keyboardType = KeyboardType.Email,
@@ -180,9 +197,10 @@ private fun LoginContent(
             AproveeTextField(
                 modifier = Modifier.focusRequester(passwordFocusRequester),
                 imeAction = ImeAction.Done,
-                keyboardActions = KeyboardActions(onDone = { onSignInClick() }),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 value = password,
                 onValueChange = onPasswordChange,
+                leadingIcon = Icons.Outlined.Lock,
                 label = stringResource(R.string.login_password_label),
                 placeholder = stringResource(R.string.login_password_placeholder),
                 isPassword = true,
@@ -190,60 +208,51 @@ private fun LoginContent(
                 isError = passwordError != null,
                 errorMessage = passwordError
             )
-            Spacer(Modifier.height(15.dp))
 
-            Row(
+            Text(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .offset(x = (6).dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
+                    .align(Alignment.End)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        role = Role.Button
+                    ) { onForgotPasswordClick() }
+                    .padding(vertical = 8.dp),
+                text = stringResource(R.string.login_forgot_password),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+
+            if (credentialError != null) {
                 Row(
-                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .heightIn(min = 48.dp)
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            role = Role.Checkbox
-                        ) { onRememberMeChange() }
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MaterialTheme.colorScheme.errorContainer)
+                        .padding(horizontal = 13.dp, vertical = 11.dp),
+                    verticalAlignment = Alignment.Top
                 ) {
-                    CompositionLocalProvider(
-                        LocalMinimumInteractiveComponentSize provides Dp.Unspecified
-                    ) {
-                        Checkbox(
-                            checked = isRememberMeChecked,
-                            onCheckedChange = null,
-                            modifier = Modifier.size(14.dp)
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(10.dp))
+                    Icon(
+                        imageVector = Icons.Outlined.WarningAmber,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onErrorContainer,
+                        modifier = Modifier.size(16.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = stringResource(R.string.login_remember_me),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onBackground
+                        text = credentialError,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onErrorContainer
                     )
                 }
-                Text(
-                    modifier = Modifier
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            role = Role.Button
-                        ) { onForgotPasswordClick() }
-                        .padding(vertical = 14.dp),
-                    text = stringResource(R.string.login_forgot_password),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary
-                )
-
+                Spacer(modifier = Modifier.height(16.dp))
             }
-            Spacer(modifier = Modifier.height(20.dp))
 
             AproveePrimaryButton(
                 text = stringResource(R.string.login_sign_in_button),
-                onClick = onSignInClick
+                onClick = onSignInClick,
+                isLoading = isLoading
             )
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -286,17 +295,17 @@ private fun LoginContent(
                 Icon(
                     painter = painterResource(R.drawable.ic_google),
                     contentDescription = stringResource(R.string.login_google_icon_description),
-                    modifier = Modifier.size(20.dp),
+                    modifier = Modifier.size(30.dp),
                     tint = Color.Unspecified
                 )
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Text(
                     text = stringResource(R.string.login_google_sign_in),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W600),
                 )
             }
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(120.dp))
 
             Row(
                 horizontalArrangement = Arrangement.Center,
@@ -304,7 +313,7 @@ private fun LoginContent(
             ) {
                 Text(
                     text = stringResource(R.string.login_no_account),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.width(4.dp))
@@ -314,7 +323,7 @@ private fun LoginContent(
                         indication = null
                     ) { onCreateAccountClick() },
                     text = stringResource(R.string.login_create_account),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.primary
                 )
             }
@@ -334,10 +343,10 @@ private fun LoginContentLightPreview() {
             onSignInClick = {},
             emailError = null,
             passwordError = null,
-            isRememberMeChecked = false,
-            onRememberMeChange = {},
             onForgotPasswordClick = {},
-            onCreateAccountClick = {}
+            onCreateAccountClick = {},
+            isLoading = false,
+            credentialError = null
         )
     }
 }
@@ -354,8 +363,8 @@ private fun LoginContentDarkPreview() {
             onSignInClick = {},
             emailError = null,
             passwordError = null,
-            isRememberMeChecked = false,
-            onRememberMeChange = {},
+            isLoading = false,
+            credentialError = null,
             onForgotPasswordClick = {},
             onCreateAccountClick = {}
         )
@@ -374,8 +383,8 @@ private fun LoginContentErrorPreview() {
             onEmailChange = {},
             onPasswordChange = {},
             onSignInClick = {},
-            isRememberMeChecked = false,
-            onRememberMeChange = {},
+            isLoading = false,
+            credentialError = "Login ou senha incorretos. Tente novamente.",
             onForgotPasswordClick = {},
             onCreateAccountClick = {}
         )
@@ -391,24 +400,13 @@ private fun LoginContentErrorDarkPreview() {
             password = "123",
             emailError = "E-mail inválido",
             passwordError = "A senha deve ter no mínimo 8 caracteres",
+            isLoading = false,
+            credentialError = "Login ou senha incorretos. Tente novamente.",
             onEmailChange = {},
             onPasswordChange = {},
             onSignInClick = {},
-            isRememberMeChecked = false,
-            onRememberMeChange = {},
             onForgotPasswordClick = {},
             onCreateAccountClick = {}
-        )
-    }
-}
-
-@Preview(name = "Login - Stateful (interativo)", showBackground = true)
-@Composable
-private fun LoginScreenStatefulPreview() {
-    AproveeTheme {
-        LoginScreen(
-            onNavigateToHome = {},
-            onNavigateToCreateAccount =  {}
         )
     }
 }

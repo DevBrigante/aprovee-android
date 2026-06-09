@@ -1,5 +1,8 @@
 package com.aprovee.app.ui.components
 
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
-import androidx.compose.material.icons.rounded.Warning
+import androidx.compose.material.icons.outlined.WarningAmber
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -27,17 +30,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.aprovee.app.ui.theme.AproveeTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import com.aprovee.app.R
+import com.aprovee.app.ui.theme.TextMutedDark
+import com.aprovee.app.ui.theme.TextMutedLight
+
 @Composable
 fun AproveeTextField(
     value: String,
@@ -45,6 +51,7 @@ fun AproveeTextField(
     label: String,
     modifier: Modifier = Modifier,
     placeholder: String = "",
+    leadingIcon: ImageVector? = null,
     isPassword: Boolean = false,
     isError: Boolean = false,
     errorMessage: String? = null,
@@ -54,51 +61,65 @@ fun AproveeTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused by interactionSource.collectIsFocusedAsState()
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = if (isError) MaterialTheme.colorScheme.error
+            else MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(
-            modifier = Modifier
-                .height(6.dp)
+            modifier = Modifier.height(6.dp)
         )
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
             enabled = enabled,
-            modifier = Modifier
-                .fillMaxWidth(),
+            interactionSource = interactionSource,
+            modifier = Modifier.fillMaxWidth(),
             placeholder = {
                 Text(
                     text = placeholder,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = if (isSystemInDarkTheme()) TextMutedDark else TextMutedLight
                 )
             },
-        isError = isError,
-            visualTransformation = if(isPassword && !passwordVisible) {
+            isError = isError,
+            visualTransformation = if (isPassword && !passwordVisible) {
                 PasswordVisualTransformation()
             } else {
                 VisualTransformation.None
             },
+            leadingIcon = leadingIcon?.let { icon ->
+                {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = null,
+                        tint = when {
+                            isError -> MaterialTheme.colorScheme.error
+                            isFocused -> MaterialTheme.colorScheme.primary
+                            else -> MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                }
+            },
             trailingIcon = {
-                if(isPassword) {
+                if (isPassword) {
                     IconButton(
-                        onClick = {passwordVisible = !passwordVisible}
-                    ) {
+                        onClick = { passwordVisible = !passwordVisible }) {
                         Icon(
-                            imageVector = if(passwordVisible) {
+                            imageVector = if (passwordVisible) {
                                 Icons.Outlined.Visibility
                             } else {
                                 Icons.Outlined.VisibilityOff
                             },
-                            contentDescription = stringResource(R.string.toggle_password_visibility)
+                            contentDescription = stringResource(R.string.toggle_password_visibility),
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }
@@ -113,34 +134,32 @@ fun AproveeTextField(
                 errorBorderColor = MaterialTheme.colorScheme.error,
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                errorContainerColor = MaterialTheme.colorScheme.errorContainer,
+                errorContainerColor = MaterialTheme.colorScheme.surfaceVariant,
             ),
-            textStyle = MaterialTheme.typography.bodyMedium.copy(
+            textStyle = MaterialTheme.typography.bodyLarge.copy(
                 color = MaterialTheme.colorScheme.onSurface
             )
         )
-        if(isError && errorMessage != null) {
+        if (isError && errorMessage != null) {
             Spacer(modifier = Modifier.height(4.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Rounded.Warning,
+                    imageVector = Icons.Outlined.WarningAmber,
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(13.dp),
+                    modifier = Modifier.size(13.dp),
                     tint = MaterialTheme.colorScheme.error
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
                     text = errorMessage,
-                    style = MaterialTheme.typography.bodyMedium.copy(fontSize = 12.sp),
+                    style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error
                 )
             }
         }
     }
-
 }
 
 @Preview(showBackground = true)
@@ -148,18 +167,13 @@ fun AproveeTextField(
 private fun AproveeTextFieldPreview() {
     AproveeTheme {
         Column(
-            modifier = Modifier
-                .padding(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             AproveeTextField(
-                value = "",
-                onValueChange = {},
-                label = "E-mail",
-                placeholder = "seu@email.com"
+                value = "", onValueChange = {}, label = "E-mail", placeholder = "seu@email.com"
             )
             Spacer(
-                modifier = Modifier
-                    .height(16.dp)
+                modifier = Modifier.height(16.dp)
             )
             AproveeTextField(
                 value = "email@errado",
@@ -169,8 +183,7 @@ private fun AproveeTextFieldPreview() {
                 errorMessage = "Esse e-mail não foi encontrado"
             )
             Spacer(
-                modifier = Modifier
-                    .height(16.dp)
+                modifier = Modifier.height(16.dp)
             )
             AproveeTextField(
                 value = "123",
@@ -190,18 +203,13 @@ private fun AproveeTextFieldPreview() {
 private fun AproveeTextFieldDarkPreview() {
     AproveeTheme(darkTheme = true) {
         Column(
-            modifier = Modifier
-                .padding(16.dp)
+            modifier = Modifier.padding(16.dp)
         ) {
             AproveeTextField(
-                value = "",
-                onValueChange = {},
-                label = "E-mail",
-                placeholder = "seu@email.com"
+                value = "", onValueChange = {}, label = "E-mail", placeholder = "seu@email.com"
             )
             Spacer(
-                modifier = Modifier
-                    .height(16.dp)
+                modifier = Modifier.height(16.dp)
             )
             AproveeTextField(
                 value = "email@errado",
@@ -211,8 +219,7 @@ private fun AproveeTextFieldDarkPreview() {
                 errorMessage = "Esse e-mail não foi encontrado"
             )
             Spacer(
-                modifier = Modifier
-                    .height(16.dp)
+                modifier = Modifier.height(16.dp)
             )
             AproveeTextField(
                 value = "123",
