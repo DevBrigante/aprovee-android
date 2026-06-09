@@ -3,6 +3,7 @@ package com.aprovee.app.ui.components
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -29,43 +30,39 @@ fun AproveeIcon(
     tint: Color = Color.White,
     backgroundTint: Color = MaterialTheme.colorScheme.primary
 ) {
-    val cornerRadius = size * 0.25f
-    val markScale = 0.55f
+    val cornerRadius = size * 0.30f
 
     Box(
-        modifier = modifier
-            .size(size)
-            .clip(RoundedCornerShape(cornerRadius))
-            .background(color = backgroundTint)
-            .then(
-                if (contentDescription != null) {
-                    Modifier.semantics { this.contentDescription = contentDescription }
-                } else Modifier
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        Canvas(
-            modifier = Modifier.size(size * markScale)
-        ) {
-            val scale = this.size.width / 48f
-            val stroke = Stroke(
-                width = 6f * scale,
-                cap = StrokeCap.Round,
-                join = StrokeJoin.Round
-            )
+        modifier = modifier.size(size).clip(RoundedCornerShape(cornerRadius))
+        .background(color = backgroundTint).then(
+            if (contentDescription != null) {
+            Modifier.semantics { this.contentDescription = contentDescription }
+        } else Modifier), contentAlignment = Alignment.Center) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val scale = this.size.width / 100f
 
-            val leftLeg = Path().apply {
-                moveTo(8f * scale, 42f * scale)
-                lineTo(24f * scale, 6f * scale)
+
+            val letterA = Path().apply {
+                moveTo(30f * scale, 74f * scale)
+                lineTo(50f * scale, 26f * scale)
+                lineTo(70f * scale, 74f * scale)
             }
-            val rightLegWithHook = Path().apply {
-                moveTo(24f * scale, 6f * scale)
-                lineTo(36f * scale, 30f * scale)
-                lineTo(29f * scale, 30f * scale)
-                lineTo(40f * scale, 18f * scale)
+
+            val check = Path().apply {
+                moveTo(37f * scale, 57f * scale)
+                lineTo(47f * scale, 66f * scale)
+                lineTo(64f * scale, 45f * scale)
             }
-            drawPath(leftLeg, color = tint, style = stroke)
-            drawPath(rightLegWithHook, color = tint, style = stroke)
+
+            drawPath(
+                path = letterA,
+                color = tint,
+                style = Stroke(width = 10f * scale, cap = StrokeCap.Round, join = StrokeJoin.Round)
+            )
+            drawPath(
+                path = check, color = tint.copy(alpha = 0.92f),
+                style = Stroke(width = 9f * scale, cap = StrokeCap.Round, join = StrokeJoin.Round)
+            )
         }
     }
 }

@@ -5,7 +5,7 @@ data class LoginUiState(
     val password: String = "",
     val emailError: String? = null,
     val passwordError: String? = null,
-    val isRememberMeChecked: Boolean = false,
+    val credentialError: String? = null,
     val isLoading: Boolean = false,
     val showForgotPasswordSheet: Boolean = false,
     val navigateToHome: Boolean = false,
