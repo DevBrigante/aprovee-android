@@ -5,18 +5,24 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -77,7 +83,7 @@ fun LoginScreen(
     viewModel: LoginViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     LaunchedEffect(uiState.navigateToHome) {
         if(uiState.navigateToHome) {
@@ -107,15 +113,19 @@ fun LoginScreen(
         onCreateAccountClick = viewModel::onCreateAccountClick,
     )
 
+    val sheetBottomInset = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+
     if(uiState.showForgotPasswordSheet) {
         ModalBottomSheet(
             onDismissRequest = viewModel::onDismissForgotPasswordSheet,
             sheetState = sheetState,
+            contentWindowInsets = { WindowInsets(0) },
         ) {
             ForgotPasswordSheetContent(
                 state = uiState.forgotPasswordState,
                 email = uiState.forgotPasswordEmail,
                 emailError = uiState.forgotPasswordEmailError,
+                bottomInset = sheetBottomInset,
                 onEmailChange = viewModel::onForgetPasswordEmailChange,
                 onSendClick = viewModel::onForgotPasswordSendClick,
                 onCloseClick = viewModel::onDismissForgotPasswordSheet
@@ -152,9 +162,8 @@ private fun LoginContent(
                 .pointerInput(Unit) {
                     detectTapGestures(onTap = { focusManager.clearFocus() })
                 }
-                .imePadding()
                 .verticalScroll(rememberScrollState())
-                .windowInsetsPadding(WindowInsets.statusBars)
+                .windowInsetsPadding(WindowInsets.systemBars.union(WindowInsets.ime))
                 .padding(horizontal = 28.dp, vertical = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -165,8 +174,8 @@ private fun LoginContent(
             val wordmarkAccent = MaterialTheme.colorScheme.primary
             Text(
                 text = buildAnnotatedString {
-                    withStyle(SpanStyle(color = wordmarkColor)) { append("aprov") }
-                    withStyle(SpanStyle(color = wordmarkAccent)) { append("ee") }
+                    withStyle(SpanStyle(color = wordmarkColor)) { append(stringResource(R.string.app_name_appro)) }
+                    withStyle(SpanStyle(color = wordmarkAccent)) { append(stringResource(R.string.app_name_ee)) }
                 },
                 style = MaterialTheme.typography.displayLarge
             )
@@ -305,7 +314,7 @@ private fun LoginContent(
                     style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.W600),
                 )
             }
-            Spacer(modifier = Modifier.height(120.dp))
+            Spacer(modifier = Modifier.height(64.dp))
 
             Row(
                 horizontalArrangement = Arrangement.Center,

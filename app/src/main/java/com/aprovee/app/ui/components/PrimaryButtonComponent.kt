@@ -1,5 +1,6 @@
 package com.aprovee.app.ui.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,13 +43,13 @@ fun AproveePrimaryButton(
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(20.dp),
-                color = Color.White,
-                strokeWidth = 2.dp
+                modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp
             )
         } else {
             Text(
-                text = text, style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                text = text,
+                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                color = if(isSystemInDarkTheme()) Color.Black else Color.White
             )
         }
     }
