@@ -43,13 +43,15 @@ fun AproveePrimaryButton(
     ) {
         if (isLoading) {
             CircularProgressIndicator(
-                modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp
+                modifier = Modifier.size(20.dp),
+                color = if (isSystemInDarkTheme()) Color.Black else Color.White,
+                strokeWidth = 2.dp
             )
         } else {
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
-                color = if(isSystemInDarkTheme()) Color.Black else Color.White
+                color = if (isSystemInDarkTheme()) Color.Black else Color.White
             )
         }
     }
@@ -64,12 +66,6 @@ private fun AproveePrimaryButtonPreview() {
         ) {
             AproveePrimaryButton(
                 text = "Entrar", onClick = {})
-            Spacer(
-                modifier = Modifier.height(12.dp)
-            )
-            AproveePrimaryButton(
-                text = "Carregando", onClick = {}, enabled = false
-            )
             Spacer(
                 modifier = Modifier.height(12.dp)
             )
