@@ -28,6 +28,9 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -45,6 +48,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -187,6 +191,8 @@ private fun CreateAccountContent(
                     onValueChange = onNameChange,
                     label = stringResource(R.string.create_account_name_label),
                     placeholder = stringResource(R.string.create_account_name_placeholder),
+                    leadingIcon = Icons.Outlined.Person,
+                    leadingIconSize = 17.dp,
                     isError = nameError != null,
                     errorMessage = nameError,
                     imeAction = ImeAction.Next,
@@ -200,6 +206,8 @@ private fun CreateAccountContent(
                     onValueChange = onEmailChange,
                     label = stringResource(R.string.create_account_email_label),
                     placeholder = stringResource(R.string.create_account_email_placeholder),
+                    leadingIcon = Icons.Outlined.Email,
+                    leadingIconSize = 17.dp,
                     keyboardType = KeyboardType.Email,
                     isError = emailError != null,
                     errorMessage = emailError,
@@ -214,6 +222,8 @@ private fun CreateAccountContent(
                     onValueChange = onPasswordChange,
                     label = stringResource(R.string.create_account_password_label),
                     placeholder = stringResource(R.string.create_account_password_placeholder),
+                    leadingIcon = Icons.Outlined.Lock,
+                    leadingIconSize = 17.dp,
                     isPassword = true,
                     keyboardType = KeyboardType.Password,
                     isError = passwordError != null,
@@ -233,6 +243,8 @@ private fun CreateAccountContent(
                     onValueChange = onConfirmPasswordChange,
                     label = stringResource(R.string.create_account_confirm_label),
                     placeholder = stringResource(R.string.create_account_confirm_placeholder),
+                    leadingIcon = Icons.Outlined.Lock,
+                    leadingIconSize = 17.dp,
                     isPassword = true,
                     keyboardType = KeyboardType.Password,
                     isError = confirmPasswordError != null,
@@ -247,7 +259,7 @@ private fun CreateAccountContent(
                     enabled = !isLoading,
                     onClick = onCreateAccountClick
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(64.dp))
 
                 Row(
                     modifier = Modifier
@@ -256,7 +268,7 @@ private fun CreateAccountContent(
                 ) {
                     Text(
                         text = stringResource(R.string.create_account_already_have),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -267,7 +279,7 @@ private fun CreateAccountContent(
                                 indication = null
                             ) { onBackClick() },
                         text = stringResource(R.string.create_account_sign_in),
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                         color = MaterialTheme.colorScheme.primary
                     )
                 }

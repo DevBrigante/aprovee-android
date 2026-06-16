@@ -40,6 +40,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.Dp
 import com.aprovee.app.R
 import com.aprovee.app.ui.theme.TextMutedDark
 import com.aprovee.app.ui.theme.TextMutedLight
@@ -52,6 +53,7 @@ fun AproveeTextField(
     modifier: Modifier = Modifier,
     placeholder: String = "",
     leadingIcon: ImageVector? = null,
+    leadingIconSize: Dp = 24.dp,
     isPassword: Boolean = false,
     isError: Boolean = false,
     errorMessage: String? = null,
@@ -98,6 +100,7 @@ fun AproveeTextField(
             leadingIcon = leadingIcon?.let { icon ->
                 {
                     Icon(
+                        modifier = Modifier.size(leadingIconSize),
                         imageVector = icon,
                         contentDescription = null,
                         tint = when {

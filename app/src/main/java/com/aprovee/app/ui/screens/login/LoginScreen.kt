@@ -86,14 +86,14 @@ fun LoginScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     LaunchedEffect(uiState.navigateToHome) {
-        if(uiState.navigateToHome) {
+        if (uiState.navigateToHome) {
             onNavigateToHome()
             viewModel.onNavigateToHomeConsumed()
         }
     }
 
     LaunchedEffect(uiState.navigateToCreateAccount) {
-        if(uiState.navigateToCreateAccount) {
+        if (uiState.navigateToCreateAccount) {
             onNavigateToCreateAccount()
             viewModel.onNavigateToCreateAccountConsumed()
         }
@@ -115,7 +115,7 @@ fun LoginScreen(
 
     val sheetBottomInset = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
-    if(uiState.showForgotPasswordSheet) {
+    if (uiState.showForgotPasswordSheet) {
         ModalBottomSheet(
             onDismissRequest = viewModel::onDismissForgotPasswordSheet,
             sheetState = sheetState,
