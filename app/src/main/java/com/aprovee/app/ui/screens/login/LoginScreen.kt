@@ -210,6 +210,7 @@ private fun LoginContent(
                 value = password,
                 onValueChange = onPasswordChange,
                 leadingIcon = Icons.Outlined.Lock,
+                leadingIconSize = 24.dp,
                 label = stringResource(R.string.login_password_label),
                 placeholder = stringResource(R.string.login_password_placeholder),
                 isPassword = true,
