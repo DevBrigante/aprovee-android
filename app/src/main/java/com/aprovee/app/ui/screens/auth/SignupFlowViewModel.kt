@@ -3,6 +3,7 @@ package com.aprovee.app.ui.screens.auth
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aprovee.app.data.repository.FakeAuthRepositoryImpl
+import com.aprovee.app.domain.model.EmailAlreadyRegisteredException
 import com.aprovee.app.domain.model.ErrorType
 import com.aprovee.app.domain.model.MaintenanceException
 import com.aprovee.app.domain.repository.AuthRepository
@@ -38,9 +39,12 @@ class SignupFlowViewModel(
             _uiState.update { SignupState.Loading }
 
             repository.createAccount(name, email, password).onSuccess {
-                    _retryCount = 0
-                    _uiState.update { SignupState.Success(email, password) }
-                }.onFailure { throwable ->
+                _retryCount = 0
+                _uiState.update { SignupState.Success(email, password) }
+            }.onFailure { throwable ->
+                if (throwable is EmailAlreadyRegisteredException) {
+                    _uiState.update { SignupState.EmailAlreadyRegistered }
+                } else {
                     val errorType = when (throwable) {
                         is SocketTimeoutException -> ErrorType.Timeout
                         is IOException -> ErrorType.NoConnection
@@ -49,7 +53,12 @@ class SignupFlowViewModel(
                     }
                     _uiState.update { SignupState.Error(errorType) }
                 }
+            }
         }
+    }
+
+    fun onEmailErrorConsumed() {
+        _uiState.update { SignupState.Idle }
     }
 
     fun retry() {

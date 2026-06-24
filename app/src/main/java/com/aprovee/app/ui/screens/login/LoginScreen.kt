@@ -162,8 +162,8 @@ private fun LoginContent(
                 .pointerInput(Unit) {
                     detectTapGestures(onTap = { focusManager.clearFocus() })
                 }
-                .verticalScroll(rememberScrollState())
                 .windowInsetsPadding(WindowInsets.systemBars.union(WindowInsets.ime))
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 28.dp, vertical = 40.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {

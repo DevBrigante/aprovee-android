@@ -47,6 +47,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -56,29 +57,44 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.aprovee.app.R
+import com.aprovee.app.domain.model.toRouteParam
 import com.aprovee.app.ui.components.AproveePrimaryButton
 import com.aprovee.app.ui.components.AproveeTextField
 import com.aprovee.app.ui.screens.auth.SignupFlowViewModel
+import com.aprovee.app.ui.screens.auth.SignupState
 import com.aprovee.app.ui.theme.AproveeTheme
 
 @Composable
 fun CreateAccountScreen(
     signupFlowViewModel: SignupFlowViewModel,
     onNavigateToLoading: () -> Unit,
+    onNavigateToError: (errorType: String) -> Unit,
     onNavigateBack: () -> Unit,
     viewModel: CreateAccountViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val signupState by signupFlowViewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(uiState.navigateToLoading) {
-        if(uiState.navigateToLoading) {
+    LaunchedEffect(uiState.submitRequested) {
+        if(uiState.submitRequested) {
             signupFlowViewModel.submit(
                 name = uiState.name,
                 email = uiState.email,
                 password = uiState.password
             )
-            onNavigateToLoading()
-            viewModel.onNavigateToLoadingConsumed()
+            viewModel.onSubmitConsumed()
+        }
+    }
+
+    LaunchedEffect(signupState) {
+        when (val state = signupState) {
+            is SignupState.EmailAlreadyRegistered -> {
+                viewModel.onEmailAlreadyRegistered()
+                signupFlowViewModel.onEmailErrorConsumed()
+            }
+            is SignupState.Error -> onNavigateToError(state.type.toRouteParam())
+            is SignupState.Success -> onNavigateToLoading()
+            else -> Unit
         }
     }
 
@@ -91,7 +107,7 @@ fun CreateAccountScreen(
         emailError = uiState.emailError,
         passwordError = uiState.passwordError,
         confirmPasswordError = uiState.confirmPasswordError,
-        isLoading = uiState.isLoading,
+        isLoading = signupState is SignupState.Loading,
         onNameChange = viewModel::onNameChange,
         onEmailChange = viewModel::onEmailChange,
         onPasswordChange = viewModel::onPasswordChange,
@@ -125,6 +141,7 @@ private fun CreateAccountContent(
     val emailFocusRequester = remember { FocusRequester() }
     val passwordFocusRequester = remember { FocusRequester() }
     val confirmFocusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -167,8 +184,8 @@ private fun CreateAccountContent(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .verticalScroll(rememberScrollState())
                     .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.ime))
+                    .verticalScroll(rememberScrollState())
                     .padding(horizontal = 28.dp)
                     .padding(top = 8.dp, bottom = 32.dp)
             ) {
@@ -246,13 +263,13 @@ private fun CreateAccountContent(
                     isError = confirmPasswordError != null,
                     errorMessage = confirmPasswordError,
                     imeAction = ImeAction.Done,
-                    keyboardActions = KeyboardActions(onDone = { onCreateAccountClick() })
+                    keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
                 )
                 Spacer(modifier = Modifier.height(24.dp))
 
                 AproveePrimaryButton(
                     text = stringResource(R.string.create_account_button),
-                    enabled = !isLoading,
+                    isLoading = isLoading,
                     onClick = onCreateAccountClick
                 )
                 Spacer(modifier = Modifier.height(64.dp))

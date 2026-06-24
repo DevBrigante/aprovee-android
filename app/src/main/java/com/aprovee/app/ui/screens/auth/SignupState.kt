@@ -7,4 +7,5 @@ sealed class SignupState {
     data object Loading: SignupState()
     data class Success(val email: String, val password: String): SignupState()
     data class Error(val type: ErrorType): SignupState()
+    data object EmailAlreadyRegistered: SignupState()
 }

@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -169,7 +170,9 @@ fun ErrorContent(
 
             if (showRetryButton) {
                 AproveePrimaryButton(
-                    text = stringResource(R.string.error_retry_button), onClick = onRetry
+                    text = stringResource(R.string.error_retry_button),
+                    onClick = onRetry,
+                    leadingIcon = Icons.Default.Refresh
                 )
                 Spacer(modifier = Modifier.height(12.dp))
             }
