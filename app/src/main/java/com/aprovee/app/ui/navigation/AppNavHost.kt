@@ -92,6 +92,9 @@ fun AppNavHost() {
                     onNavigateToLoading = {
                         navController.navigate(LoadingRoute)
                     },
+                    onNavigateToError = { errorType ->
+                        navController.navigate(ErrorRoute(errorType))
+                    },
                     onNavigateBack = { navController.popBackStack() })
             }
             composable<LoadingRoute> { backStackEntry ->

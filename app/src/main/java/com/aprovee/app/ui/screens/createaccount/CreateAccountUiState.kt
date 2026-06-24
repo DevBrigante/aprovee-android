@@ -9,6 +9,5 @@ data class CreateAccountUiState(
     val emailError: String? = null,
     val passwordError: String? = null,
     val confirmPasswordError: String? = null,
-    val isLoading: Boolean = false,
-    val navigateToLoading: Boolean = false,
+    val submitRequested: Boolean = false
 )

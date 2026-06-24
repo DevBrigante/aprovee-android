@@ -29,7 +29,7 @@ class CreateAccountViewModel(): ViewModel() {
     fun onConfirmPasswordFocusLost() {
         val s = uiState.value
         if (s.confirmPassword.isEmpty()) return
-        val error = if (s.confirmPassword != s.password) "As senhas não condizem" else null
+        val error = if (s.confirmPassword != s.password) "As senhas não coincidem" else null
         _uiState.update { it.copy(confirmPasswordError = error) }
     }
 
@@ -42,7 +42,7 @@ class CreateAccountViewModel(): ViewModel() {
         }
         val emailError: String? = if(!s.email.contains("@") || !s.email.contains(".")) "E-mail inválido" else null
         val passwordError: String? = if(s.password.length < 8) "A senha deve ter no mínimo 8 caracteres" else null
-        val confirmPasswordError: String? = if(s.confirmPassword != s.password) "As senhas não condizem" else null
+        val confirmPasswordError: String? = if(s.confirmPassword != s.password) "As senhas não coincidem" else null
 
         _uiState.update { it.copy(
             nameError = nameError,
@@ -54,11 +54,14 @@ class CreateAccountViewModel(): ViewModel() {
         val hasError = listOf(nameError, emailError, passwordError, confirmPasswordError).any { it!=null }
         if (hasError) return
 
-        _uiState.update { it.copy(navigateToLoading = true) }
-
+        _uiState.update { it.copy(submitRequested = true) }
     }
 
-    fun onNavigateToLoadingConsumed() {
-        _uiState.update { it.copy(navigateToLoading = false) }
+    fun onSubmitConsumed() {
+        _uiState.update { it.copy(submitRequested = false) }
+    }
+
+    fun onEmailAlreadyRegistered() {
+        _uiState.update { it.copy(emailError = "Este e-mail já está cadastrado") }
     }
 }

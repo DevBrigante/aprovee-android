@@ -14,7 +14,7 @@ class CreateAccountViewModelTest {
     }
 
     @Test
-    fun onCreateAccountClick_whenAllFieldsValid_setsNavigateToLoading() {
+    fun onCreateAccountClick_whenAllFieldsValid_setsSubmitRequested() {
         //given
         viewModel.onNameChange("Brenno")
         viewModel.onEmailChange("brenno@gmail.com")
@@ -25,7 +25,7 @@ class CreateAccountViewModelTest {
         viewModel.onCreateAccountClick()
 
         //then
-        assertThat(viewModel.uiState.value.navigateToLoading).isTrue()
+        assertThat(viewModel.uiState.value.submitRequested).isTrue()
     }
 
     @Test
@@ -41,7 +41,7 @@ class CreateAccountViewModelTest {
 
         //then
         assertThat(viewModel.uiState.value.nameError).isNotNull()
-        assertThat(viewModel.uiState.value.navigateToLoading).isFalse()
+        assertThat(viewModel.uiState.value.submitRequested).isFalse()
     }
 
     @Test
