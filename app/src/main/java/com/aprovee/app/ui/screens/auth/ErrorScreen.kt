@@ -23,12 +23,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.aprovee.app.R
 import com.aprovee.app.domain.model.ErrorType
 import com.aprovee.app.ui.components.AproveePrimaryButton
@@ -43,11 +46,16 @@ import com.aprovee.app.ui.theme.AproveeTheme
 fun ErrorScreen(
     errorType: ErrorType,
     signupFlowViewModel: SignupFlowViewModel,
-    onRetry: () -> Unit,
+    onNavigateToLoading: () -> Unit,
     onGoBack: () -> Unit
 ) {
     val isDark = isSystemInDarkTheme()
+    val uiState by signupFlowViewModel.uiState.collectAsStateWithLifecycle()
     val retryLimitExceeded = signupFlowViewModel.hasExceededRetryLimit
+
+    LaunchedEffect(uiState) {
+        if (uiState is SignupState.Success) onNavigateToLoading()
+    }
 
     val title: String
     val subtitle: String
@@ -91,10 +99,8 @@ fun ErrorScreen(
         illustration = illustration,
         showRetryButton = !retryLimitExceeded,
         retryLimitExceeded = retryLimitExceeded,
-        onRetry = {
-            signupFlowViewModel.retry()
-            onRetry()
-        },
+        isRetrying = uiState is SignupState.Loading,
+        onRetry = { signupFlowViewModel.retry() },
         onGoBack = {
             signupFlowViewModel.onErrorAcknowledged()
             onGoBack()
@@ -108,6 +114,7 @@ fun ErrorContent(
     illustration: @Composable () -> Unit,
     showRetryButton: Boolean,
     retryLimitExceeded: Boolean,
+    isRetrying: Boolean,
     onRetry: () -> Unit,
     onGoBack: () -> Unit
 ) {
@@ -172,6 +179,7 @@ fun ErrorContent(
                 AproveePrimaryButton(
                     text = stringResource(R.string.error_retry_button),
                     onClick = onRetry,
+                    isLoading = isRetrying,
                     leadingIcon = Icons.Default.Refresh
                 )
                 Spacer(modifier = Modifier.height(12.dp))
@@ -185,7 +193,7 @@ fun ErrorContent(
                 Text(
                     text = stringResource(R.string.error_go_back_button),
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
@@ -207,7 +215,9 @@ private fun ErrorServerLightPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = true
+        )
     }
 }
 
@@ -222,7 +232,9 @@ private fun ErrorServerDarkPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }
 
@@ -237,7 +249,9 @@ private fun ErrorNoConnectionLightPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }
 
@@ -252,7 +266,9 @@ private fun ErrorNoConnectionDarkPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }
 
@@ -267,7 +283,9 @@ private fun ErrorTimeoutLightPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }
 
@@ -282,7 +300,9 @@ private fun ErrorTimeoutDarkPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }
 
@@ -297,7 +317,9 @@ private fun ErrorMaintenanceLightPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }
 
@@ -312,7 +334,9 @@ private fun ErrorMaintenanceDarkPreview() {
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }
 
@@ -327,7 +351,9 @@ private fun ErrorRetryLimitLightPreview() {
             showRetryButton = false,
             retryLimitExceeded = true,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }
 
@@ -342,6 +368,8 @@ private fun ErrorRetryLimitDarkPreview() {
             showRetryButton = false,
             retryLimitExceeded = true,
             onRetry = {},
-            onGoBack = {})
+            onGoBack = {},
+            isRetrying = false
+        )
     }
 }

@@ -38,10 +38,12 @@ class SignupFlowViewModel(
         viewModelScope.launch {
             _uiState.update { SignupState.Loading }
 
-            repository.createAccount(name, email, password).onSuccess {
+            repository.createAccount(name, email, password)
+                .onSuccess {
                 _retryCount = 0
                 _uiState.update { SignupState.Success(email, password) }
-            }.onFailure { throwable ->
+            }
+                .onFailure { throwable ->
                 if (throwable is EmailAlreadyRegisteredException) {
                     _uiState.update { SignupState.EmailAlreadyRegistered }
                 } else {
