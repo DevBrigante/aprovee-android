@@ -1,5 +1,6 @@
 package com.aprovee.app
 
+import com.aprovee.app.domain.model.EmailAlreadyRegisteredException
 import com.aprovee.app.domain.model.ErrorType
 import com.aprovee.app.domain.model.MaintenanceException
 import com.aprovee.app.domain.repository.AuthRepository
@@ -156,5 +157,34 @@ class SignupFlowViewModelTest {
 
         //then
         assertThat(viewModel.hasExceededRetryLimit).isFalse()
+    }
+
+    @Test
+    fun submit_whenRepositoryFailsWithEmailAlreadyRegistered_emitsEmailAlreadyRegisteredState() = runTest {
+        //given
+        coEvery { repository.createAccount(any(), any(), any()) } returns Result.failure(
+            EmailAlreadyRegisteredException("email already registered")
+        )
+
+        //when
+        viewModel.submit("Brenno", "brenno@gmail.com", "senha123")
+
+        //then
+        assertThat(viewModel.uiState.value).isEqualTo(SignupState.EmailAlreadyRegistered)
+    }
+
+    @Test
+    fun onEmailErrorConsumed_emitsIdle() = runTest {
+        //given
+        coEvery { repository.createAccount(any(), any(), any()) } returns Result.failure(
+            EmailAlreadyRegisteredException("email already registered")
+        )
+        viewModel.submit("Brenno", "brenno@gmail.com", "senha123")
+
+        //when
+        viewModel.onEmailErrorConsumed()
+
+        //then
+        assertThat(viewModel.uiState.value).isEqualTo(SignupState.Idle)
     }
 }
