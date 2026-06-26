@@ -121,8 +121,10 @@ fun AppNavHost() {
                 ErrorScreen(
                     errorType = errorRoute.errorType.toErrorType(),
                     signupFlowViewModel = signupFlowViewModel,
-                    onRetry = {
-                        navController.popBackStack()
+                    onNavigateToLoading = {
+                        navController.navigate(LoadingRoute) {
+                            popUpTo<ErrorRoute> { inclusive = true }
+                        }
                     },
                     onGoBack = {
                         navController.popBackStack<CreateAccountRoute>(inclusive = false)

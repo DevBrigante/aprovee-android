@@ -1,6 +1,5 @@
 package com.aprovee.app.ui.components
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,15 +41,15 @@ fun AproveePrimaryButton(
         shape = RoundedCornerShape(12.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = Color.White,
-            disabledContentColor = Color.White.copy(alpha = 0.5f),
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f),
             disabledContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
         )
     ) {
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(20.dp),
-                color = if (isSystemInDarkTheme()) Color.Black else Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 strokeWidth = 2.dp
             )
         } else {
@@ -58,7 +57,7 @@ fun AproveePrimaryButton(
                 Icon(
                     imageVector = leadingIcon,
                     contentDescription = null,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(20.dp),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
             }
@@ -73,7 +72,7 @@ fun AproveePrimaryButton(
 @Preview
 @Composable
 private fun AproveePrimaryButtonPreview() {
-    AproveeTheme {
+    AproveeTheme(darkTheme = true) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
