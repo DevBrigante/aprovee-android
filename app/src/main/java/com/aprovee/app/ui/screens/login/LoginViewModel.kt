@@ -66,7 +66,9 @@ class LoginViewModel(
                 showForgotPasswordSheet = false,
                 forgotPasswordEmail = "",
                 forgotPasswordEmailError = null,
-                forgotPasswordState = ForgotPasswordState.Input
+                forgotPasswordState = ForgotPasswordState.Input,
+                email = "",
+                password = ""
             )
         }
     }

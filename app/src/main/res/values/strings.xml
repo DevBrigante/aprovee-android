@@ -58,4 +58,11 @@
     <string name="splash_wordmark">Aprovee</string>
     <string name="app_name_appro">Aprov</string>
     <string name="app_name_ee">ee</string>
+    <string name="home_topbar_notifications">Notificações</string>
+    <string name="home_topbar_calendar">Calendário</string>
+    <string name="home_tab_home">Início</string>
+    <string name="home_tab_clients">Clientes</string>
+    <string name="home_tab_revenue">Receita</string>
+    <string name="home_tab_profile">Perfil</string>
+    <string name="home_fab_new_client">Novo cliente</string>
 </resources>
