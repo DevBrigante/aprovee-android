@@ -38,8 +38,8 @@ import com.aprovee.app.ui.theme.AproveeTheme
 @Composable
 private fun FirstTimeBody(
     userName: String,
-    modifier: Modifier = Modifier,
-    onNewClient: () -> Unit
+    onNewClient: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -92,13 +92,13 @@ private fun FirstTimeBody(
 
 @Composable
 fun HomeContent(
-    modifier: Modifier = Modifier,
     state: HomeUiState,
     onNewClient: () -> Unit,
     onBell: () -> Unit,
     onCalendar: () -> Unit,
     onTabSelected: (HomeTab) -> Unit,
-    onFab: () -> Unit
+    onFab: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
         modifier = modifier,

@@ -6,17 +6,8 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.NavHost
@@ -30,6 +21,7 @@ import com.aprovee.app.ui.screens.auth.SignupFlowViewModel
 import com.aprovee.app.ui.screens.auth.SplashScreen
 import com.aprovee.app.ui.screens.auth.WelcomeScreen
 import com.aprovee.app.ui.screens.createaccount.CreateAccountScreen
+import com.aprovee.app.ui.screens.home.HomeScreen
 import com.aprovee.app.ui.screens.login.LoginScreen
 
 @Composable
@@ -138,32 +130,7 @@ fun AppNavHost() {
             }
         }
         composable<HomeRoute> {
-            PlaceholderScreen(title = "Home")
+            HomeScreen(onNewClient = {/* TODO: stepper "Novo Cliente" — Marco 2 */})
         }
     }
-}
-
-@Composable
-private fun PlaceholderScreen(
-    title: String, onNavigate: (() -> Unit)? = null
-) {
-    Surface(
-        modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
-    ) {
-        Box(
-            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-        ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(
-                    text = title, style = MaterialTheme.typography.headlineLarge
-                )
-                if (onNavigate != null) {
-                    Button(onClick = onNavigate) {
-                        Text("Avançar")
-                    }
-                }
-            }
-        }
-    }
-
 }
