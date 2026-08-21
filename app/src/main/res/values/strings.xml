@@ -65,4 +65,7 @@
     <string name="home_tab_revenue">Receita</string>
     <string name="home_tab_profile">Perfil</string>
     <string name="home_fab_new_client">Novo cliente</string>
+    <string name="home_firsttime_title">Bem-vindo ao Aprovee, %1$s!</string>
+    <string name="home_firsttime_subtitle">Para começar a organizar suas vendas, cadastre seu primeiro cliente.</string>
+    <string name="home_firsttime_cta">Cadastrar primeiro cliente</string>
 </resources>

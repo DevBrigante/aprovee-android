@@ -30,10 +30,10 @@ import com.aprovee.app.ui.theme.AproveeTheme
 
 @Composable
 fun HomeTopBar(
-    modifier: Modifier = Modifier,
-    unread: Int = 0,
     onBell: () -> Unit,
     onCalendar: () -> Unit,
+    modifier: Modifier = Modifier,
+    unread: Int = 0
 ) {
     Surface(
         modifier = modifier,
