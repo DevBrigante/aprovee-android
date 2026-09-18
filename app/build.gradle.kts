@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.compose.animation.graphics)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.datastore.preferences)
 
     testImplementation(libs.junit)
     testImplementation(libs.truth)

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,6 +29,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,7 +48,9 @@ fun HomeBottomNav(
     activeTab: HomeTab = HomeTab.Home
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
-        Column {
+        Column(
+            modifier = Modifier.padding(top = 22.dp)
+        ) {
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             Row(
                 modifier = Modifier
@@ -91,23 +93,19 @@ fun HomeBottomNav(
         }
         Box(
             modifier = Modifier
+                .align(Alignment.TopCenter)
                 .size(58.dp)
-                .clickable { onFab() }
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(20.dp)
-                    )
+                .clip(RoundedCornerShape(20.dp))
+                .background(color = MaterialTheme.colorScheme.primary)
                 .border(
                     width = 4.dp,
                     color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(20.dp)
                 )
-                .align(Alignment.TopCenter)
-                .offset(y = (-22).dp)
+                .clickable { onFab() },
+            contentAlignment = Alignment.Center
         ) {
             Icon(
-                modifier = Modifier
-                    .align(Alignment.Center),
                 imageVector = Icons.Default.Add,
                 tint = MaterialTheme.colorScheme.onPrimary,
                 contentDescription = stringResource(R.string.home_fab_new_client),
