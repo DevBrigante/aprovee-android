@@ -63,7 +63,7 @@ fun AproveePrimaryButton(
             }
             Text(
                 text = text,
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold)
             )
         }
     }

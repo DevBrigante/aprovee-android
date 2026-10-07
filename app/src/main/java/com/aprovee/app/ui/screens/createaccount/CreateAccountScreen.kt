@@ -191,7 +191,7 @@ private fun CreateAccountContent(
             ) {
                 Text(
                     text = stringResource(R.string.create_account_title),
-                    style = MaterialTheme.typography.displayLarge,
+                    style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )
                 Spacer(modifier = Modifier.height(6.dp))

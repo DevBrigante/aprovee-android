@@ -74,7 +74,7 @@ fun WelcomeContent(
 
             Text(
                 text = stringResource(R.string.welcome_title),
-                style = MaterialTheme.typography.displaySmall,
+                style = MaterialTheme.typography.headlineSmall,
                 color = Color.White,
                 textAlign = TextAlign.Center
             )

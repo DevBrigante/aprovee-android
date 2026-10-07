@@ -177,7 +177,7 @@ private fun LoginContent(
                     withStyle(SpanStyle(color = wordmarkColor)) { append(stringResource(R.string.app_name_appro)) }
                     withStyle(SpanStyle(color = wordmarkAccent)) { append(stringResource(R.string.app_name_ee)) }
                 },
-                style = MaterialTheme.typography.displayLarge
+                style = MaterialTheme.typography.headlineMedium
             )
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -229,7 +229,7 @@ private fun LoginContent(
                     ) { onForgotPasswordClick() }
                     .padding(vertical = 8.dp),
                 text = stringResource(R.string.login_forgot_password),
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.primary
             )
             Spacer(modifier = Modifier.height(12.dp))

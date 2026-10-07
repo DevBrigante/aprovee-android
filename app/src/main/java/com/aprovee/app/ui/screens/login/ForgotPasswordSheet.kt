@@ -78,7 +78,7 @@ fun ForgotPasswordSheetContent(
 
                 Text(
                     text = stringResource(R.string.forgot_password_title_input),
-                    style = MaterialTheme.typography.headlineLarge,
+                    style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(8.dp))
@@ -136,7 +136,7 @@ fun ForgotPasswordSheetContent(
 
                     Text(
                         text = stringResource(R.string.forgot_password_title_sent),
-                        style = MaterialTheme.typography.headlineLarge,
+                        style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                         textAlign = TextAlign.Center,
                     )

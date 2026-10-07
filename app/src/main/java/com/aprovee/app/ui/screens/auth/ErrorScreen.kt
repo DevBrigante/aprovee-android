@@ -151,7 +151,7 @@ fun ErrorContent(
                 ) {
                     Text(
                         text = stringResource(R.string.error_retry_limit_badge),
-                        style = MaterialTheme.typography.labelSmall,
+                        style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onError
                     )
                 }
@@ -159,7 +159,7 @@ fun ErrorContent(
             }
             Text(
                 text = title,
-                style = MaterialTheme.typography.displaySmall,
+                style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
