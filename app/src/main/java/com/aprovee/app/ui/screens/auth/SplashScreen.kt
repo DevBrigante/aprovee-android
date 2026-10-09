@@ -34,12 +34,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.aprovee.app.R
 import com.aprovee.app.ui.theme.AproveeTheme
-import com.aprovee.app.ui.theme.BgDark
-import com.aprovee.app.ui.theme.PrimaryDark
-import com.aprovee.app.ui.theme.SplashBgLight
-import com.aprovee.app.ui.theme.SplashLogoDark
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
+
+private val SplashBgLight = Color(0xFF0C8C7C)
+private val SplashBgDark = Color(0xFF0B120F)
+private val SplashAccentDark = Color(0xFF2DD4BF)
+private val SplashLogoDark = Color(0xFF06231F)
 
 @OptIn(ExperimentalAnimationGraphicsApi::class)
 @Composable
@@ -62,16 +63,15 @@ fun SplashScreen(
     )
 }
 
-
 @Composable
 private fun SplashContent(
     isDark: Boolean,
     painter: Painter
 ) {
-    val backgroundColor = if (isDark) BgDark else SplashBgLight
-    val badgeColor = if (isDark) PrimaryDark else Color.White
+    val backgroundColor = if (isDark) SplashBgDark else SplashBgLight
+    val badgeColor = if (isDark) SplashAccentDark else Color.White
     val logoColor = if (isDark) SplashLogoDark else SplashBgLight
-    val wordmarkColor = if (isDark) PrimaryDark else Color.White
+    val wordmarkColor = if (isDark) SplashAccentDark else Color.White
 
     Box(
         modifier = Modifier

@@ -7,6 +7,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -21,20 +22,17 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.aprovee.app.ui.theme.OverdueLight
-import com.aprovee.app.ui.theme.PrimaryDark
-import com.aprovee.app.ui.theme.PrimaryLight
-import com.aprovee.app.ui.theme.TextDark
-import com.aprovee.app.ui.theme.TextLight
+import com.aprovee.app.ui.theme.AproveeTheme
 
 
 @Composable
 fun IllusFallenServer(
-    modifier: Modifier = Modifier, size: Dp = 160.dp, isDark: Boolean = false
+    modifier: Modifier = Modifier,
+    size: Dp = 160.dp
 ) {
-    val stroke = if (isDark) TextDark else TextLight
-    val accent = if (isDark) PrimaryDark else PrimaryLight
-    val error  = OverdueLight
+    val stroke = MaterialTheme.colorScheme.onBackground
+    val accent = MaterialTheme.colorScheme.primary
+    val error  = MaterialTheme.colorScheme.error
 
     val infiniteTransition = rememberInfiniteTransition(label = "led-blink")
     val ledAlpha by infiniteTransition.animateFloat(
@@ -177,11 +175,15 @@ fun IllusFallenServer(
 @Preview(showBackground = true, backgroundColor = 0xFFF8FAFC)
 @Composable
 private fun IllusFallenServerLightPreview() {
-    IllusFallenServer(isDark = false)
+    AproveeTheme(false) {
+        IllusFallenServer()
+    }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFF1E293B)
 @Composable
 private fun IllusFallenServerDarkPreview() {
-    IllusFallenServer(isDark = true)
+    AproveeTheme(true) {
+        IllusFallenServer()
+    }
 }

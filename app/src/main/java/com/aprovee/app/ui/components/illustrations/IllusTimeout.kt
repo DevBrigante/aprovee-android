@@ -2,6 +2,7 @@ package com.aprovee.app.ui.components.illustrations
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -12,11 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.graphics.Path
-import com.aprovee.app.ui.theme.OverdueLight
-import com.aprovee.app.ui.theme.PrimaryDark
-import com.aprovee.app.ui.theme.PrimaryLight
-import com.aprovee.app.ui.theme.TextDark
-import com.aprovee.app.ui.theme.TextLight
+import com.aprovee.app.ui.theme.AproveeTheme
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -24,11 +21,10 @@ import kotlin.math.sin
 fun IllusTimeout(
     modifier: Modifier = Modifier,
     size: Dp = 160.dp,
-    isDark: Boolean = false
 ) {
-    val stroke = if (isDark) TextDark else TextLight
-    val accent = if (isDark) PrimaryDark else PrimaryLight
-    val error  = OverdueLight
+    val stroke = MaterialTheme.colorScheme.onBackground
+    val accent = MaterialTheme.colorScheme.primary
+    val error  = MaterialTheme.colorScheme.error
 
     Canvas(modifier = modifier.size(size)) {
         val s = this.size.width / 200f
@@ -114,11 +110,15 @@ fun IllusTimeout(
 @Preview(showBackground = true, backgroundColor = 0xFFF8FAFC)
 @Composable
 private fun IllusTimeoutLightPreview() {
-    IllusTimeout(isDark = false)
+    AproveeTheme (false) {
+        IllusTimeout()
+    }
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFF1E293B)
 @Composable
 private fun IllusTimeoutDarkPreview() {
-    IllusTimeout(isDark = true)
+    AproveeTheme (true) {
+        IllusTimeout()
+    }
 }

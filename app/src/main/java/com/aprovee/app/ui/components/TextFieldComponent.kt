@@ -2,7 +2,6 @@ package com.aprovee.app.ui.components
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -42,9 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.Dp
 import com.aprovee.app.R
-import com.aprovee.app.ui.theme.TextMutedDark
-import com.aprovee.app.ui.theme.TextMutedLight
-
 @Composable
 fun AproveeTextField(
     value: String,
@@ -88,7 +84,7 @@ fun AproveeTextField(
                 Text(
                     text = placeholder,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = if (isSystemInDarkTheme()) TextMutedDark else TextMutedLight
+                    color = AproveeTheme.colors.textTertiary
                 )
             },
             isError = isError,

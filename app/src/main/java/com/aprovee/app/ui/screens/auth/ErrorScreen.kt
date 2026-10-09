@@ -49,7 +49,6 @@ fun ErrorScreen(
     onNavigateToLoading: () -> Unit,
     onGoBack: () -> Unit
 ) {
-    val isDark = isSystemInDarkTheme()
     val uiState by signupFlowViewModel.uiState.collectAsStateWithLifecycle()
     val retryLimitExceeded = signupFlowViewModel.hasExceededRetryLimit
 
@@ -64,31 +63,31 @@ fun ErrorScreen(
     if (retryLimitExceeded) {
         title = stringResource(R.string.error_retry_limit_title)
         subtitle = stringResource(R.string.error_retry_limit_subtitle)
-        illustration = { IllusFallenServer(isDark = isDark) }
+        illustration = { IllusFallenServer() }
     } else {
         when (errorType) {
             ErrorType.ServerError -> {
                 title = stringResource(R.string.error_server_title)
                 subtitle = stringResource(R.string.error_server_subtitle)
-                illustration = { IllusFallenServer(isDark = isDark) }
+                illustration = { IllusFallenServer() }
             }
 
             ErrorType.NoConnection -> {
                 title = stringResource(R.string.error_no_connection_title)
                 subtitle = stringResource(R.string.error_no_connection_subtitle)
-                illustration = { IllusOffline(isDark = isDark) }
+                illustration = { IllusOffline() }
             }
 
             ErrorType.Timeout -> {
                 title = stringResource(R.string.error_timeout_title)
                 subtitle = stringResource(R.string.error_timeout_subtitle)
-                illustration = { IllusTimeout(isDark = isDark) }
+                illustration = { IllusTimeout() }
             }
 
             ErrorType.Maintenance -> {
                 title = stringResource(R.string.error_maintenance_title)
                 subtitle = stringResource(R.string.error_maintenance_subtitle)
-                illustration = { IllusMaintenance(isDark = isDark) }
+                illustration = { IllusMaintenance() }
             }
         }
     }
@@ -211,7 +210,7 @@ private fun ErrorServerLightPreview() {
         ErrorContent(
             title = "Algo deu errado",
             subtitle = "Não conseguimos criar a sua conta agora. Tente novamente em alguns instantes.",
-            illustration = { IllusFallenServer(isDark = false) },
+            illustration = { IllusFallenServer() },
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
@@ -228,7 +227,7 @@ private fun ErrorServerDarkPreview() {
         ErrorContent(
             title = "Algo deu errado",
             subtitle = "Não conseguimos criar a sua conta agora. Tente novamente em alguns instantes.",
-            illustration = { IllusFallenServer(isDark = true) },
+            illustration = { IllusFallenServer() },
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
@@ -245,7 +244,7 @@ private fun ErrorNoConnectionLightPreview() {
         ErrorContent(
             title = "Sem conexão",
             subtitle = "Verifique sua internet e tente novamente.",
-            illustration = { IllusOffline(isDark = false) },
+            illustration = { IllusOffline() },
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
@@ -262,7 +261,7 @@ private fun ErrorNoConnectionDarkPreview() {
         ErrorContent(
             title = "Sem conexão",
             subtitle = "Verifique sua internet e tente novamente.",
-            illustration = { IllusOffline(isDark = true) },
+            illustration = { IllusOffline() },
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
@@ -279,7 +278,7 @@ private fun ErrorTimeoutLightPreview() {
         ErrorContent(
             title = "A solicitação demorou demais",
             subtitle = "O servidor levou tempo demais para responder. Pode ser uma instabilidade temporária.",
-            illustration = { IllusTimeout(isDark = false) },
+            illustration = { IllusTimeout() },
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
@@ -296,7 +295,7 @@ private fun ErrorTimeoutDarkPreview() {
         ErrorContent(
             title = "A solicitação demorou demais",
             subtitle = "O servidor levou tempo demais para responder. Pode ser uma instabilidade temporária.",
-            illustration = { IllusTimeout(isDark = true) },
+            illustration = { IllusTimeout() },
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
@@ -313,7 +312,7 @@ private fun ErrorMaintenanceLightPreview() {
         ErrorContent(
             title = "Estamos em manutenção",
             subtitle = "Voltamos em alguns minutos. Estamos melhorando o Aprovee para você.",
-            illustration = { IllusMaintenance(isDark = false) },
+            illustration = { IllusMaintenance() },
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
@@ -330,7 +329,7 @@ private fun ErrorMaintenanceDarkPreview() {
         ErrorContent(
             title = "Estamos em manutenção",
             subtitle = "Voltamos em alguns minutos. Estamos melhorando o Aprovee para você.",
-            illustration = { IllusMaintenance(isDark = true) },
+            illustration = { IllusMaintenance() },
             showRetryButton = true,
             retryLimitExceeded = false,
             onRetry = {},
@@ -347,7 +346,7 @@ private fun ErrorRetryLimitLightPreview() {
         ErrorContent(
             title = "Muitas tentativas seguidas",
             subtitle = "Você excedeu o limite de tentativas. Tente novamente mais tarde — já estamos trabalhando pra resolver.",
-            illustration = { IllusFallenServer(isDark = false) },
+            illustration = { IllusFallenServer() },
             showRetryButton = false,
             retryLimitExceeded = true,
             onRetry = {},
@@ -364,7 +363,7 @@ private fun ErrorRetryLimitDarkPreview() {
         ErrorContent(
             title = "Muitas tentativas seguidas",
             subtitle = "Você excedeu o limite de tentativas. Tente novamente mais tarde — já estamos trabalhando pra resolver.",
-            illustration = { IllusFallenServer(isDark = true) },
+            illustration = { IllusFallenServer() },
             showRetryButton = false,
             retryLimitExceeded = true,
             onRetry = {},
