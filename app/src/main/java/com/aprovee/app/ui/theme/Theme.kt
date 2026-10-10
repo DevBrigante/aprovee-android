@@ -80,6 +80,7 @@ fun AproveeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composabl
         MaterialTheme(
             colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme,
             typography = AppTypography,
+            shapes = AproveeShapes,
             content = content
         )
     }
