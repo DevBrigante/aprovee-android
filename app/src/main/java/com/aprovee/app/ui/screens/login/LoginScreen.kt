@@ -303,7 +303,7 @@ private fun LoginContent(
                 Icon(
                     painter = painterResource(R.drawable.ic_google),
                     contentDescription = stringResource(R.string.login_google_icon_description),
-                    modifier = Modifier.size(30.dp),
+                    modifier = Modifier.size(22.dp),
                     tint = Color.Unspecified
                 )
                 Spacer(modifier = Modifier.width(10.dp))

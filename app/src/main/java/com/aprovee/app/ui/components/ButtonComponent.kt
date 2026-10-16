@@ -50,6 +50,76 @@ fun AproveePrimaryButton(
         leadingIcon = leadingIcon
     )
 }
+
+@Composable
+fun AproveeOutlinedButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+    loadingText: String? = null,
+    leadingIcon: Painter?= null
+) {
+    AproveeButtonBase(
+        text = text,
+        onClick = onClick,
+        containerColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        modifier = modifier,
+        enabled = enabled,
+        isLoading = isLoading,
+        loadingText = loadingText,
+        leadingIcon = leadingIcon,
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline)
+    )
+}
+
+@Composable
+fun AproveeTextButton(
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    leadingIcon: Painter?= null
+) {
+    AproveeButtonBase(
+        text = text,
+        onClick = onClick,
+        containerColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.primary,
+        modifier = modifier,
+        enabled = enabled,
+        leadingIcon = leadingIcon,
+        height = 44.dp
+    )
+}
+
+@Composable
+fun AproveeSocialButton(
+    text: String,
+    icon: Painter,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+    loadingText: String? = null
+) {
+    AproveeButtonBase(
+        text = text,
+        onClick = onClick,
+        containerColor = MaterialTheme.colorScheme.surface,
+        contentColor = MaterialTheme.colorScheme.onSurface,
+        modifier = modifier,
+        enabled = enabled,
+        isLoading = isLoading,
+        loadingText = loadingText,
+        leadingIcon = icon,
+        border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline),
+        tintIcon = false
+    )
+}
+
 @Composable
 private fun AproveeButtonBase(
     text: String,
@@ -62,7 +132,8 @@ private fun AproveeButtonBase(
     loadingText: String? = null,
     leadingIcon: Painter? = null,
     border: BorderStroke? = null,
-    height: Dp = 52.dp
+    height: Dp = 52.dp,
+    tintIcon: Boolean = true
 ) {
     val isDisabled = !enabled && !isLoading
     Button(
@@ -75,8 +146,11 @@ private fun AproveeButtonBase(
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
             contentColor = contentColor,
-            disabledContainerColor = if (isLoading) containerColor.copy(alpha = 0.85f)
-            else MaterialTheme.colorScheme.surfaceVariant,
+            disabledContainerColor = when {
+                isLoading -> containerColor.copy(alpha = 0.85f)
+                containerColor == Color.Transparent -> Color.Transparent
+                else -> MaterialTheme.colorScheme.surfaceVariant
+            },
             disabledContentColor = if (isLoading) contentColor
             else AproveeTheme.colors.textTertiary
         )
@@ -91,7 +165,12 @@ private fun AproveeButtonBase(
             Text(text = loadingText ?: text, style = MaterialTheme.typography.labelLarge)
         } else {
             if (leadingIcon != null) {
-                Icon(painter = leadingIcon, contentDescription = null, modifier = Modifier.size(22.dp))
+                Icon(
+                    painter = leadingIcon,
+                    contentDescription = null,
+                    modifier = Modifier.size(22.dp),
+                    tint = if (tintIcon) LocalContentColor.current else Color.Unspecified
+                )
                 Spacer(modifier = Modifier.width(8.dp))
             }
             Text(text = text, style = MaterialTheme.typography.labelLarge)
@@ -100,7 +179,7 @@ private fun AproveeButtonBase(
 }
 
 @Composable
-private fun PrimaryButtonStates() {
+private fun ButtonVariants() {
     Column(modifier = Modifier.padding(16.dp)) {
         AproveePrimaryButton(text = "Entrar", onClick = {})
         Spacer(modifier = Modifier.height(12.dp))
@@ -110,20 +189,32 @@ private fun PrimaryButtonStates() {
             leadingIcon = painterResource(R.drawable.ic_refresh)
         )
         Spacer(modifier = Modifier.height(12.dp))
-        AproveePrimaryButton(text = "Entrar", onClick = {}, isLoading = true, loadingText = "Entrando...")
+        AproveePrimaryButton(text = "Entrar", onClick = {}, isLoading = true, loadingText = "Entrando…")
         Spacer(modifier = Modifier.height(12.dp))
         AproveePrimaryButton(text = "Criar conta", onClick = {}, enabled = false)
+        Spacer(modifier = Modifier.height(12.dp))
+        AproveeOutlinedButton(text = "Voltar", onClick = {})
+        Spacer(modifier = Modifier.height(12.dp))
+        AproveeOutlinedButton(text = "Voltar", onClick = {}, enabled = false)
+        Spacer(modifier = Modifier.height(12.dp))
+        AproveeTextButton(text = "Voltar para o login", onClick = {})
+        Spacer(modifier = Modifier.height(12.dp))
+        AproveeSocialButton(
+            text = "Continuar com Google",
+            icon = painterResource(R.drawable.ic_google),
+            onClick = {}
+        )
     }
 }
 
 @Preview(name = "PrimaryButton - Light", showBackground = true)
 @Composable
 private fun AproveePrimaryButtonLightPreview() {
-    AproveeTheme(darkTheme = false) { PrimaryButtonStates() }
+    AproveeTheme(darkTheme = false) { ButtonVariants() }
 }
 
 @Preview(name = "PrimaryButton - Dark", showBackground = true, backgroundColor = 0xFF0B0F0E)
 @Composable
 private fun AproveePrimaryButtonDarkPreview() {
-    AproveeTheme(darkTheme = true) { PrimaryButtonStates() }
+    AproveeTheme(darkTheme = true) { ButtonVariants() }
 }
