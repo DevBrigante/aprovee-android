@@ -270,7 +270,8 @@ private fun CreateAccountContent(
                 AproveePrimaryButton(
                     text = stringResource(R.string.create_account_button),
                     isLoading = isLoading,
-                    onClick = onCreateAccountClick
+                    onClick = onCreateAccountClick,
+                    loadingText = stringResource(R.string.create_account_creating)
                 )
                 Spacer(modifier = Modifier.height(64.dp))
 

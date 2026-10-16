@@ -14,6 +14,7 @@
     <string name="login_no_account">Não tem uma conta?</string>
     <string name="login_error_credentials">E-mail ou senha incorretos. Tente novamente.</string>
     <string name="login_create_account">Criar nova conta</string>
+    <string name="login_signing_in">Entrando…</string>
     <string name="forgot_password_title_input">Redefinir sua senha</string>
     <string name="forgot_password_subtitle_input">Informe o e-mail da sua conta e enviaremos um link para você criar uma nova
   senha.</string>
@@ -36,6 +37,7 @@
     <string name="create_account_confirm_label">Confirmar senha</string>
     <string name="create_account_confirm_placeholder">Repita a senha</string>
     <string name="create_account_button">Criar conta</string>
+    <string name="create_account_creating">Criando conta…</string>
     <string name="create_account_already_have">Já tem uma conta?</string>
     <string name="create_account_sign_in">Entrar</string>
     <string name="loading_creating_account">Criando sua conta…</string>
